@@ -1,0 +1,2475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Management System</title>
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #0056b3;
+            --success-color: #28a745;
+            --warning-color: #ff9800;
+            --danger-color: #dc3545;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 5px;
+            --box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+            position: relative;
+        }
+
+        .header img {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 60px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        h2, h3 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 24px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            font-size: 20px;
+            margin-top: 25px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 15px;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            margin: 10px 5px 10px 0;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+        }
+
+        .btn-success:hover {
+            background-color: #218838;
+        }
+
+        .btn-warning {
+            background-color: var(--warning-color);
+        }
+
+        .btn-warning:hover {
+            background-color: #e68900;
+        }
+
+        .btn-danger {
+            background-color: var(--danger-color);
+        }
+
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 14px;
+        }
+
+        .card {
+            background: var(--light-color);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+
+        .card p {
+            margin: 5px 0;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .toggle-container {
+            margin: 15px 0;
+        }
+
+        .toggle-btn {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .action-buttons {
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            margin-right: 10px;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1001;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal h2 {
+            margin-top: 0;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            margin-left: 10px;
+        }
+
+        .message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: var(--border-radius);
+        }
+
+        .success-message {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .error-message {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        .info-message {
+            background-color: #d1ecf1;
+            color: #0c5460;
+        }
+
+        .leave-balance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            display: none;
+        }
+
+        .leave-balance-table.visible {
+            display: table;
+        }
+
+        .leave-balance-table th,
+        .leave-balance-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .leave-balance-table th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+
+        .leave-balance-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .leave-balance-table tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        .employee-selection {
+            margin: 15px 0;
+        }
+
+        .employee-checkboxes {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .employee-checkboxes label {
+            display: block;
+            padding: 8px;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .employee-checkboxes label:hover {
+            background-color: #f0f0f0;
+        }
+
+        .employee-checkboxes input[type="checkbox"] {
+            margin-right: 10px;
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .username-container {
+            position: relative;
+        }
+
+        .info-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #666;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            width: 250px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: var(--border-radius);
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .info-icon:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .login-panel-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .login-panel {
+            display: none;
+            margin-top: 20px;
+        }
+
+        .login-panel.active {
+            display: block;
+        }
+
+        .login-panel-label {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .superadmin-controls {
+            margin: 25px 0;
+        }
+
+        .superadmin-controls button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+
+        .employee-controls {
+            display: flex;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .public-holidays-list {
+            margin-top: 20px;
+        }
+
+        .unrecorded-leave-list {
+            margin-top: 20px;
+        }
+
+        .management-section {
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: var(--border-radius);
+            display: none;
+        }
+
+        .management-section.active {
+            display: block;
+        }
+
+        .department-list {
+            margin-top: 15px;
+        }
+
+        .department-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .employee-list {
+            margin-top: 15px;
+        }
+
+        .employee-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .admin-department-selection {
+            margin-top: 15px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 20px 10px;
+            }
+
+            .header img {
+                position: static;
+                transform: none;
+                margin-bottom: 15px;
+            }
+
+            .login-panel-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .employee-controls {
+                flex-direction: column;
+            }
+
+            .tab-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body onload="initializeSystem()">
+    <!-- Header Section -->
+    <div class="header">
+        <img src="COMPANY LOGO" alt="Company Logo">
+        The Archipelago Group Leave Management System
+    </div>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="changePasswordOverlay"></div>
+    <div class="modal" id="changePasswordModal">
+        <h2>Change Password</h2>
+        
+        <div class="password-container">
+            <input type="password" id="currentPassword" placeholder="Current Password">
+            <span class="toggle-password" onclick="togglePasswordVisibility('currentPassword')">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        
+        <div class="password-container">
+            <input type="password" id="newPassword" placeholder="New Password">
+            <span class="toggle-password" onclick="togglePasswordVisibility('newPassword')">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        
+        <div class="password-container">
+            <input type="password" id="confirmNewPassword" placeholder="Confirm New Password">
+            <span class="toggle-password" onclick="togglePasswordVisibility('confirmNewPassword')">
+                <i class="fas fa-eye"></i>
+            </span>
+        </div>
+        
+        <p class="info-message">
+            Password must be at least 8 characters long and include at least 1 uppercase letter, 
+            1 lowercase letter, 1 number, and 1 special character.
+        </p>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="changePassword()">Change Password</button>
+            <button onclick="closeChangePasswordModal()">Cancel</button>
+        </div>
+        <p id="passwordMessage" class="message"></p>
+    </div>
+
+    <!-- Add Public Holiday Modal -->
+    <div class="modal-overlay" id="addHolidayOverlay"></div>
+    <div class="modal" id="addHolidayModal">
+        <h2>Add Public Holiday</h2>
+        <input type="text" id="publicHolidayDate" placeholder="Select Date">
+        <input type="text" id="publicHolidayName" placeholder="Holiday Name">
+        <label>Holiday Type:</label>
+        <select id="publicHolidayType" onchange="toggleHalfDayTime()">
+            <option value="Full Day">Full Day</option>
+            <option value="Half Day">Half Day</option>
+        </select>
+        <div id="halfDayTimeHolidayContainer" class="hidden">
+            <label>Half Day Time:</label>
+            <select id="halfDayTimeHoliday">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="addPublicHoliday()">Add</button>
+            <button onclick="closeAddHolidayTab()">Cancel</button>
+        </div>
+        <p id="holidayMessage" class="message"></p>
+    </div>
+
+    <!-- Edit Leave Balance Modal -->
+    <div class="modal-overlay" id="editBalanceOverlay"></div>
+    <div class="modal" id="editBalanceModal">
+        <h2>Edit Leave Balance</h2>
+        <p id="editBalanceEmployeeName"></p>
+        <div id="editBalanceForm"></div>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="saveLeaveBalances()">Save</button>
+            <button onclick="closeEditBalanceModal()">Cancel</button>
+        </div>
+        <p id="editBalanceMessage" class="message"></p>
+    </div>
+
+    <!-- Unrecorded Leave Modal -->
+    <div class="modal-overlay" id="unrecordedLeaveOverlay"></div>
+    <div class="modal" id="unrecordedLeaveModal">
+        <h2 id="unrecordedLeaveTitle">Add Unrecorded Leave</h2>
+        <input type="text" id="unrecordedLeaveDate" placeholder="Select Date">
+        <input type="text" id="unrecordedLeaveName" placeholder="Leave Name">
+        <label>Leave Type:</label>
+        <select id="unrecordedLeaveType" onchange="toggleUnrecordedHalfDayTime()">
+            <option value="Full Day">Full Day</option>
+            <option value="Half Day">Half Day</option>
+        </select>
+        <div id="halfDayTimeUnrecordedContainer" class="hidden">
+            <label>Half Day Time:</label>
+            <select id="halfDayTimeUnrecorded">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+        </div>
+        <div id="employeeSelectionContainer" class="employee-selection hidden">
+            <label>Select Employees:</label>
+            <div id="employeeCheckboxes" class="employee-checkboxes"></div>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="addUnrecordedLeave()">Add</button>
+            <button onclick="closeUnrecordedLeaveModal()">Cancel</button>
+        </div>
+        <p id="unrecordedLeaveMessage" class="message"></p>
+    </div>
+
+    <!-- Add Department Modal -->
+    <div class="modal-overlay" id="addDepartmentOverlay"></div>
+    <div class="modal" id="addDepartmentModal">
+        <h2>Add New Department</h2>
+        <input type="text" id="newDepartmentName" placeholder="Department Name">
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="addDepartment()">Add Department</button>
+            <button onclick="closeAddDepartmentModal()">Cancel</button>
+        </div>
+        <p id="departmentMessage" class="message"></p>
+    </div>
+
+    <!-- Add Employee Modal -->
+    <div class="modal-overlay" id="addEmployeeOverlay"></div>
+    <div class="modal" id="addEmployeeModal">
+        <h2>Add New Employee</h2>
+        <input type="text" id="newEmployeeUsername" placeholder="Username">
+        <input type="text" id="newEmployeeName" placeholder="Full Name">
+        <input type="password" id="newEmployeePassword" placeholder="Password">
+        <select id="newEmployeeRole" onchange="toggleAdminDepartmentSelection()">
+            <option value="employee">Employee</option>
+            <option value="admin">Admin</option>
+        </select>
+        <select id="newEmployeeDepartment">
+            <!-- Will be populated with departments -->
+        </select>
+        <div id="adminDepartmentSelection" class="admin-department-selection hidden">
+            <label>Department to Supervise:</label>
+            <select id="newEmployeeSupervisedDepartment">
+                <!-- Will be populated with departments -->
+            </select>
+        </div>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="addEmployee()">Add Employee</button>
+            <button onclick="closeAddEmployeeModal()">Cancel</button>
+        </div>
+        <p id="employeeMessage" class="message"></p>
+    </div>
+
+    <!-- Move Employee Modal -->
+    <div class="modal-overlay" id="moveEmployeeOverlay"></div>
+    <div class="modal" id="moveEmployeeModal">
+        <h2>Move Employee to Another Department</h2>
+        <p id="moveEmployeeCurrentInfo"></p>
+        <select id="newEmployeeDepartmentForMove">
+            <!-- Will be populated with departments -->
+        </select>
+        <div class="modal-buttons">
+            <button class="btn-success" onclick="moveEmployee()">Move Employee</button>
+            <button onclick="closeMoveEmployeeModal()">Cancel</button>
+        </div>
+        <p id="moveEmployeeMessage" class="message"></p>
+    </div>
+
+    <!-- Login Page -->
+    <div class="container" id="loginPage">
+        <h2>Login</h2>
+        <div class="login-panel-buttons">
+            <button onclick="showEmployeeLogin()">Employee Login</button>
+            <button onclick="showAdminLogin()">Admin Login</button>
+            <button onclick="showSuperAdminLogin()">Super Admin Login</button>
+        </div>
+        
+        <div id="employeeLoginPanel" class="login-panel">
+            <div class="login-panel-label">Employee Login Panel</div>
+            <div class="username-container">
+                <input type="text" id="employeeUsername" placeholder="Username">
+                <span class="info-icon" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip">USE THE FIRST NAME IN YOUR EMAIL<br>Example: mags@archipelagogrp.com<br>USERNAME: mags</span>
+                </span>
+            </div>
+            <div class="password-container">
+                <input type="password" id="employeePassword" placeholder="Password">
+                <span class="toggle-password" onclick="togglePasswordVisibility('employeePassword')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+            <button class="btn-success" onclick="login('employee')">Login</button>
+        </div>
+        
+        <div id="adminLoginPanel" class="login-panel">
+            <div class="login-panel-label">Admin Login Panel</div>
+            <div class="username-container">
+                <input type="text" id="adminUsername" placeholder="Username">
+                <span class="info-icon" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip">USE THE FIRST NAME IN YOUR EMAIL<br>Example: mags@archipelagogrp.com<br>USERNAME: mags</span>
+                </span>
+            </div>
+            <div class="password-container">
+                <input type="password" id="adminPassword" placeholder="Password">
+                <span class="toggle-password" onclick="togglePasswordVisibility('adminPassword')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+            <button class="btn-success" onclick="login('admin')">Login</button>
+        </div>
+        
+        <div id="superAdminLoginPanel" class="login-panel">
+            <div class="login-panel-label">Super Admin Login Panel</div>
+            <div class="username-container">
+                <input type="text" id="superAdminUsername" placeholder="Username">
+                <span class="info-icon" tabindex="0">
+                    <i class="fas fa-info-circle"></i>
+                    <span class="tooltip">USE THE FIRST NAME IN YOUR EMAIL<br>Example: mags@archipelagogrp.com<br>USERNAME: mags</span>
+                </span>
+            </div>
+            <div class="password-container">
+                <input type="password" id="superAdminPassword" placeholder="Password">
+                <span class="toggle-password" onclick="togglePasswordVisibility('superAdminPassword')">
+                    <i class="fas fa-eye"></i>
+                </span>
+            </div>
+            <button class="btn-success" onclick="login('superadmin')">Login</button>
+        </div>
+        
+        <p id="message" class="message"></p>
+    </div>
+
+    <!-- User Page -->
+    <div class="container" id="userPage" style="display: none;">
+        <button class="btn-success change-password-btn" onclick="openChangePasswordModal()">
+            <i class="fas fa-key"></i> Change Password
+        </button>
+        <h2>Apply for Leave</h2>
+        
+        <p><b>Remaining Leave Days:</b> 
+            <button class="toggle-btn btn-sm" onclick="toggleLeaveBalanceTable('user')">View Leave Balances</button>
+        </p>
+        
+        <table id="userLeaveBalancesTable" class="leave-balance-table">
+            <thead>
+                <tr>
+                    <th>Leave Type</th>
+                    <th>Remaining Days</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        
+        <div class="employee-controls">
+            <button class="toggle-btn btn-sm" onclick="togglePublicHolidays('user')">
+                <i class="fas fa-calendar-alt"></i> Public Holidays
+            </button>
+            <button class="toggle-btn btn-sm" onclick="toggleUnrecordedLeaves('user')">
+                <i class="fas fa-clock"></i> Unrecorded Leaves
+            </button>
+        </div>
+        
+        <div id="userPublicHolidaysList" class="public-holidays-list hidden"></div>
+        <div id="userUnrecordedLeavesList" class="unrecorded-leave-list hidden"></div>
+        
+        <label>Reason for Leave:</label>
+        <select id="leaveReason" onchange="toggleOtherReason()">
+            <option value="Annual Leave">Annual Leave</option>
+            <option value="Emergency Leave">Emergency Leave</option>
+            <option value="Unpaid Leave">Unpaid Leave</option>
+            <option value="Medical Leave">Medical Leave</option>
+            <option value="Marriage Leave">Marriage Leave</option>
+            <option value="Maternity Leave">Maternity Leave</option>
+            <option value="Paternity Leave">Paternity Leave</option>
+            <option value="Compassionate Leave">Compassionate Leave</option>
+            <option value="Study Leave">Study Leave</option>
+            <option value="Examination Leave">Examination Leave</option>
+            <option value="Replacement Leave">Replacement Leave</option>
+        </select>
+        
+        <label>Leave Type:</label>
+        <select id="leaveType" onchange="toggleLeaveTypeFields()">
+            <option value="Half Day">Half Day</option>
+            <option value="Full Day">Full Day</option>
+        </select>
+        
+        <div id="halfDayTimeContainer">
+            <label>Half Day Time:</label>
+            <select id="halfDayTime">
+                <option value="Morning">Morning</option>
+                <option value="Afternoon">Afternoon</option>
+            </select>
+        </div>
+        
+        <div class="calendar-container">
+            <label>Starting Date:</label>
+            <input type="text" id="startDate" placeholder="Select Start Date">
+            <div id="endDateContainer" class="hidden">
+                <label>Ending Date:</label>
+                <input type="text" id="endDate" placeholder="Select End Date">
+            </div>
+        </div>
+        
+        <label>Upload Documents:</label>
+        <input type="file" id="documents" accept="application/pdf" multiple>
+        <p class="info-message">
+            Note: Documents are required for all leave types except Annual Leave.
+        </p>
+        
+        <button class="btn-success" onclick="applyLeave()">Submit</button>
+        <p id="userMessage" class="message"></p>
+        
+        <h3>Your Leave Requests</h3>
+        <div id="employeeRequests"></div>
+        
+        <button class="btn-warning" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Admin Page -->
+    <div class="container" id="adminPage" style="display: none;">
+        <button class="btn-success change-password-btn" onclick="openChangePasswordModal()">
+            <i class="fas fa-key"></i> Change Password
+        </button>
+        
+        <h2>Admin Panel</h2>
+        
+        <div class="employee-selection">
+            <label>Select Employee:</label>
+            <select id="adminEmployeeSelect" onchange="loadAdminEmployeeData()">
+                <option value="">-- Select an Employee --</option>
+            </select>
+        </div>
+        
+        <div class="employee-controls">
+            <button class="toggle-btn btn-sm" onclick="togglePublicHolidays('admin')">
+                <i class="fas fa-calendar-alt"></i> Public Holidays
+            </button>
+            <button class="toggle-btn btn-sm" onclick="toggleUnrecordedLeaves('admin')">
+                <i class="fas fa-clock"></i> Unrecorded Leaves
+            </button>
+        </div>
+        
+        <div id="adminPublicHolidaysList" class="public-holidays-list hidden"></div>
+        <div id="adminUnrecordedLeavesList" class="unrecorded-leave-list hidden"></div>
+        
+        <div id="adminEmployeeDataContainer" class="hidden">
+            <h3>Employee Leave Balances 
+                <button class="toggle-btn btn-sm" onclick="toggleLeaveBalanceTable('admin')">View Leave Balances</button>
+            </h3>
+            
+            <table id="adminEmployeeLeaveBalancesTable" class="leave-balance-table">
+                <thead>
+                    <tr>
+                        <th>Leave Type</th>
+                        <th>Remaining Days</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
+            <h3>Employee Leave Requests</h3>
+            <div id="adminEmployeeLeaveRequestsList"></div>
+        </div>
+        
+        <button class="btn-warning" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Super Admin Page -->
+    <div class="container" id="superAdminPage" style="display: none;">
+        <button class="btn-success change-password-btn" onclick="openChangePasswordModal()">
+            <i class="fas fa-key"></i> Change Password
+        </button>
+        
+        <h2>Super Admin Panel</h2>
+        
+        <div class="superadmin-controls">
+            <button class="btn-warning" onclick="openAddHolidayTab()">
+                <i class="fas fa-calendar-plus"></i> Add Public Holiday
+            </button>
+            
+            <button class="btn-warning" onclick="openUnrecordedLeaveModal('all')">
+                <i class="fas fa-user-clock"></i> Unrecorded Leave for All
+            </button>
+            
+            <button class="btn-warning" onclick="openUnrecordedLeaveModal('some')">
+                <i class="fas fa-users"></i> Unrecorded Leave for Some
+            </button>
+            
+            <button class="toggle-btn" onclick="togglePublicHolidays('superadmin')">
+                <i class="fas fa-calendar-alt"></i> View Public Holidays
+            </button>
+            
+            <div id="superadminPublicHolidaysList" class="public-holidays-list hidden"></div>
+            
+            <button class="toggle-btn" onclick="toggleUnrecordedLeaves('superadmin')">
+                <i class="fas fa-clock"></i> View Unrecorded Leaves
+            </button>
+            
+            <div id="superadminUnrecordedLeavesList" class="unrecorded-leave-list hidden"></div>
+        </div>
+        
+        <!-- Tab buttons for management sections -->
+        <div class="tab-buttons">
+            <button class="btn-success" id="departmentManagementBtn" onclick="toggleManagementSection('departmentManagement')">
+                <i class="fas fa-building"></i> Department Management
+            </button>
+            <button class="btn-success" id="employeeManagementBtn" onclick="toggleManagementSection('employeeManagement')">
+                <i class="fas fa-users"></i> Employee Management
+            </button>
+        </div>
+        
+        <!-- Department Management Section -->
+        <div id="departmentManagement" class="management-section">
+            <h3>Department Management</h3>
+            <button class="btn-success" onclick="openAddDepartmentModal()">
+                <i class="fas fa-plus"></i> Add New Department
+            </button>
+            
+            <div class="department-list">
+                <h4>Current Departments:</h4>
+                <div id="departmentList"></div>
+            </div>
+        </div>
+        
+        <!-- Employee Management Section -->
+        <div id="employeeManagement" class="management-section">
+            <h3>Employee Management</h3>
+            <button class="btn-success" onclick="openAddEmployeeModal()">
+                <i class="fas fa-user-plus"></i> Add New Employee
+            </button>
+            
+            <div class="employee-list">
+                <h4>Current Employees:</h4>
+                <div id="employeeList"></div>
+            </div>
+        </div>
+        
+        <div class="employee-selection">
+            <label>Select Department:</label>
+            <select id="departmentSelect" onchange="loadEmployees(); document.getElementById('employeeSelect').value = '';">
+                <!-- Will be populated with departments -->
+            </select>
+            
+            <label>Select Employee:</label>
+            <select id="employeeSelect" onchange="loadEmployeeData()">
+                <option value="">-- Select an Employee --</option>
+            </select>
+        </div>
+        
+        <div id="employeeDataContainer" class="hidden">
+            <h3>Employee Leave Balances 
+                <button class="toggle-btn btn-sm" onclick="toggleLeaveBalanceTable('superadmin')">View Leave Balances</button>
+            </h3>
+            
+            <table id="employeeLeaveBalancesTable" class="leave-balance-table">
+                <thead>
+                    <tr>
+                        <th>Leave Type</th>
+                        <th>Remaining Days</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            
+            <button class="btn-warning edit-balance-btn" onclick="openEditBalanceModalForSelectedEmployee()">
+                <i class="fas fa-edit"></i> Edit Balances
+            </button>
+            
+            <h3>Employee Leave Requests</h3>
+            <div id="employeeLeaveRequestsList"></div>
+        </div>
+        
+        <button class="btn-warning" onclick="logout()">Logout</button>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Initialize system data
+        function initializeSystem() {
+            // Clear all existing data
+            localStorage.clear();
+
+            // Initialize departments array
+            let departments = ["Department 1", "Department 2", "Department 3", "Department 4", "Department 5"];
+            localStorage.setItem("departments", JSON.stringify(departments));
+
+            // Initialize users array with admin1 at the top
+            let users = [
+                { username: "admin1", name: "Admin One", password: "admin123", role: "admin", department: "Department 1", supervisedDepartment: "Department 1", canApplyForLeave: true, managedBy: "admin5" },
+                { username: "admin2", name: "Admin Two", password: "admin123", role: "admin", department: "Department 2", supervisedDepartment: "Department 2", canApplyForLeave: true, managedBy: "admin5" },
+                { username: "admin3", name: "Admin Three", password: "admin123", role: "admin", department: "Department 3", supervisedDepartment: "Department 3", canApplyForLeave: true, managedBy: "admin5" },
+                { username: "admin4", name: "Admin Four", password: "admin123", role: "admin", department: "Department 4", supervisedDepartment: "Department 4", canApplyForLeave: true, managedBy: "admin5" },
+                { username: "admin5", name: "Admin Five", password: "admin123", role: "admin", department: "Department 5", supervisedDepartment: "Department 5", canApplyForLeave: false },
+                { username: "employee1", name: "Employee One", password: "pass123", role: "employee", department: "Department 1", canApplyForLeave: true },
+                { username: "employee2", name: "Employee Two", password: "pass456", role: "employee", department: "Department 1", canApplyForLeave: true },
+                { username: "employee3", name: "Employee Three", password: "pass123", role: "employee", department: "Department 2", canApplyForLeave: true },
+                { username: "employee4", name: "Employee Four", password: "pass456", role: "employee", department: "Department 2", canApplyForLeave: true },
+                { username: "employee5", name: "Employee Five", password: "pass123", role: "employee", department: "Department 3", canApplyForLeave: true },
+                { username: "employee6", name: "Employee Six", password: "pass456", role: "employee", department: "Department 3", canApplyForLeave: true },
+                { username: "employee7", name: "Employee Seven", password: "pass123", role: "employee", department: "Department 4", canApplyForLeave: true },
+                { username: "employee8", name: "Employee Eight", password: "pass456", role: "employee", department: "Department 4", canApplyForLeave: true },
+                { username: "superadmin", name: "Super Admin", password: "superadmin123", role: "superadmin", department: "Department 1", canApplyForLeave: true }
+            ];
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // Initialize leave balances for each employee
+            let leaveBalances = {};
+            users.forEach(user => {
+                if (user.role === "employee" || (user.role === "admin" && user.username !== "admin5") || user.role === "superadmin") {
+                    leaveBalances[user.username] = {
+                        "Annual Leave": 14,
+                        "Emergency Leave": 7,
+                        "Unpaid Leave": 7,
+                        "Medical Leave": 14,
+                        "Marriage Leave": 3,
+                        "Maternity Leave": 60,
+                        "Paternity Leave": 2,
+                        "Compassionate Leave": 7,
+                        "Study Leave": 3,
+                        "Examination Leave": 365,
+                        "Replacement Leave": 0
+                    };
+                }
+            });
+            localStorage.setItem("leaveBalances", JSON.stringify(leaveBalances));
+
+            // Initialize other data
+            localStorage.setItem("leaveRequests", JSON.stringify([]));
+            localStorage.setItem("publicHolidays", JSON.stringify([]));
+            localStorage.setItem("unrecordedLeaves", JSON.stringify([]));
+
+            loadPage();
+        }
+
+        // Toggle management sections
+        function toggleManagementSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const btn = document.getElementById(sectionId + "Btn");
+            
+            if (section.classList.contains('active')) {
+                section.classList.remove('active');
+                btn.classList.remove('active');
+            } else {
+                // Hide all sections first
+                document.querySelectorAll('.management-section').forEach(s => s.classList.remove('active'));
+                document.querySelectorAll('.tab-buttons button').forEach(b => b.classList.remove('active'));
+                
+                // Show the selected section
+                section.classList.add('active');
+                btn.classList.add('active');
+            }
+        }
+
+        // Toggle admin department selection
+        function toggleAdminDepartmentSelection() {
+            const role = document.getElementById("newEmployeeRole").value;
+            const adminDeptSelection = document.getElementById("adminDepartmentSelection");
+            
+            if (role === "admin") {
+                adminDeptSelection.classList.remove("hidden");
+            } else {
+                adminDeptSelection.classList.add("hidden");
+            }
+        }
+
+        // Department Management Functions
+        function openAddDepartmentModal() {
+            document.getElementById("addDepartmentModal").style.display = "block";
+            document.getElementById("addDepartmentOverlay").style.display = "block";
+            document.getElementById("newDepartmentName").value = "";
+            document.getElementById("departmentMessage").innerText = "";
+        }
+
+        function closeAddDepartmentModal() {
+            document.getElementById("addDepartmentModal").style.display = "none";
+            document.getElementById("addDepartmentOverlay").style.display = "none";
+        }
+
+        function addDepartment() {
+            let departmentName = document.getElementById("newDepartmentName").value.trim();
+            let messageElement = document.getElementById("departmentMessage");
+
+            if (!departmentName) {
+                messageElement.innerText = "Please enter a department name.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let departments = JSON.parse(localStorage.getItem("departments"));
+            
+            if (departments.includes(departmentName)) {
+                messageElement.innerText = "Department already exists.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            departments.push(departmentName);
+            localStorage.setItem("departments", JSON.stringify(departments));
+
+            messageElement.innerText = "Department added successfully!";
+            messageElement.className = "success-message";
+            
+            // Update the department dropdowns
+            updateDepartmentDropdowns();
+            loadDepartmentsList();
+            
+            setTimeout(() => {
+                closeAddDepartmentModal();
+            }, 2000);
+        }
+
+        function deleteDepartment(departmentName) {
+            if (confirm(`Are you sure you want to delete the ${departmentName} department? This will move all employees in this department to 'Unassigned'.`)) {
+                let departments = JSON.parse(localStorage.getItem("departments"));
+                let users = JSON.parse(localStorage.getItem("users"));
+                
+                // Remove the department
+                departments = departments.filter(dept => dept !== departmentName);
+                localStorage.setItem("departments", JSON.stringify(departments));
+                
+                // Move all employees in this department to 'Unassigned'
+                users.forEach(user => {
+                    if (user.department === departmentName) {
+                        user.department = "Unassigned";
+                    }
+                });
+                localStorage.setItem("users", JSON.stringify(users));
+                
+                // Update the department dropdowns and lists
+                updateDepartmentDropdowns();
+                loadDepartmentsList();
+                loadEmployeesList();
+                
+                // Refresh admin panel if needed
+                refreshAdminPanel();
+                
+                // If viewing an employee from this department, clear the selection
+                if (document.getElementById("employeeSelect").value) {
+                    let selectedEmployee = document.getElementById("employeeSelect").value;
+                    let employee = users.find(u => u.username === selectedEmployee);
+                    if (employee && employee.department === "Unassigned") {
+                        document.getElementById("employeeSelect").value = "";
+                        document.getElementById("employeeDataContainer").classList.add("hidden");
+                    }
+                }
+            }
+        }
+
+        function loadDepartmentsList() {
+            let departments = JSON.parse(localStorage.getItem("departments"));
+            let departmentList = document.getElementById("departmentList");
+            departmentList.innerHTML = "";
+            
+            if (departments.length === 0) {
+                departmentList.innerHTML = "<p>No departments found.</p>";
+                return;
+            }
+            
+            departments.forEach(department => {
+                let deptItem = document.createElement("div");
+                deptItem.className = "department-item";
+                deptItem.innerHTML = `
+                    <span>${department}</span>
+                    <button class="btn-danger btn-sm" onclick="deleteDepartment('${department}')">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                `;
+                departmentList.appendChild(deptItem);
+            });
+        }
+
+        function updateDepartmentDropdowns() {
+            let departments = JSON.parse(localStorage.getItem("departments"));
+            
+            // Update department select in superadmin panel
+            let departmentSelect = document.getElementById("departmentSelect");
+            departmentSelect.innerHTML = "";
+            departments.forEach(dept => {
+                let option = document.createElement("option");
+                option.value = dept;
+                option.text = dept;
+                departmentSelect.appendChild(option);
+            });
+            
+            // Update department select in add employee modal
+            let employeeDeptSelect = document.getElementById("newEmployeeDepartment");
+            employeeDeptSelect.innerHTML = "";
+            departments.forEach(dept => {
+                let option = document.createElement("option");
+                option.value = dept;
+                option.text = dept;
+                employeeDeptSelect.appendChild(option);
+            });
+            
+            // Update supervised department select in add employee modal
+            let supervisedDeptSelect = document.getElementById("newEmployeeSupervisedDepartment");
+            supervisedDeptSelect.innerHTML = "";
+            departments.forEach(dept => {
+                let option = document.createElement("option");
+                option.value = dept;
+                option.text = dept;
+                supervisedDeptSelect.appendChild(option);
+            });
+            
+            // Update department select in move employee modal
+            let moveDeptSelect = document.getElementById("newEmployeeDepartmentForMove");
+            if (moveDeptSelect) {
+                moveDeptSelect.innerHTML = "";
+                departments.forEach(dept => {
+                    let option = document.createElement("option");
+                    option.value = dept;
+                    option.text = dept;
+                    moveDeptSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Employee Management Functions
+        function openAddEmployeeModal() {
+            // Ensure department dropdown is updated
+            updateDepartmentDropdowns();
+            
+            document.getElementById("addEmployeeModal").style.display = "block";
+            document.getElementById("addEmployeeOverlay").style.display = "block";
+            document.getElementById("newEmployeeUsername").value = "";
+            document.getElementById("newEmployeeName").value = "";
+            document.getElementById("newEmployeePassword").value = "";
+            document.getElementById("newEmployeeRole").value = "employee";
+            document.getElementById("adminDepartmentSelection").classList.add("hidden");
+            document.getElementById("employeeMessage").innerText = "";
+        }
+
+        function closeAddEmployeeModal() {
+            document.getElementById("addEmployeeModal").style.display = "none";
+            document.getElementById("addEmployeeOverlay").style.display = "none";
+        }
+
+        function addEmployee() {
+            let username = document.getElementById("newEmployeeUsername").value.trim();
+            let name = document.getElementById("newEmployeeName").value.trim();
+            let password = document.getElementById("newEmployeePassword").value;
+            let role = document.getElementById("newEmployeeRole").value;
+            let department = document.getElementById("newEmployeeDepartment").value;
+            let supervisedDepartment = role === "admin" ? document.getElementById("newEmployeeSupervisedDepartment").value : null;
+            let messageElement = document.getElementById("employeeMessage");
+
+            if (!username || !name || !password || !department) {
+                messageElement.innerText = "Please fill in all fields.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem("users"));
+            
+            if (users.some(u => u.username === username)) {
+                messageElement.innerText = "Username already exists.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            // Validate password
+            let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(password)) {
+                messageElement.innerText = "Password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            // Create new employee
+            let newEmployee = {
+                username,
+                name,
+                password,
+                role,
+                department,
+                canApplyForLeave: true
+            };
+
+            // Add supervised department for admins
+            if (role === "admin") {
+                newEmployee.supervisedDepartment = supervisedDepartment;
+                
+                // If adding an admin in Department 5, set managedBy to admin5
+                if (department === "Department 5") {
+                    newEmployee.managedBy = "admin5";
+                }
+            }
+
+            users.push(newEmployee);
+            localStorage.setItem("users", JSON.stringify(users));
+
+            // Initialize leave balances for the new employee
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            leaveBalances[username] = {
+                "Annual Leave": 14,
+                "Emergency Leave": 7,
+                "Unpaid Leave": 7,
+                "Medical Leave": 14,
+                "Marriage Leave": 3,
+                "Maternity Leave": 60,
+                "Paternity Leave": 2,
+                "Compassionate Leave": 7,
+                "Study Leave": 3,
+                "Examination Leave": 365,
+                "Replacement Leave": 0
+            };
+            localStorage.setItem("leaveBalances", JSON.stringify(leaveBalances));
+
+            messageElement.innerText = "Employee added successfully!";
+            messageElement.className = "success-message";
+            
+            // Update the employee list and dropdowns
+            loadEmployeesList();
+            updateDepartmentDropdowns();
+            
+            // Refresh admin panel if needed
+            refreshAdminPanel();
+            
+            setTimeout(() => {
+                closeAddEmployeeModal();
+            }, 2000);
+        }
+
+        function openMoveEmployeeModal(username) {
+            let users = JSON.parse(localStorage.getItem("users"));
+            let employee = users.find(u => u.username === username);
+            
+            if (!employee) {
+                alert("Employee not found!");
+                return;
+            }
+            
+            // Populate the department dropdown
+            updateDepartmentDropdowns();
+            
+            document.getElementById("moveEmployeeCurrentInfo").innerText = 
+                `Moving ${employee.name} (${employee.username}) from ${employee.department} department`;
+            
+            // Set the current department as selected
+            let moveDeptSelect = document.getElementById("newEmployeeDepartmentForMove");
+            if (moveDeptSelect) {
+                for (let i = 0; i < moveDeptSelect.options.length; i++) {
+                    if (moveDeptSelect.options[i].value === employee.department) {
+                        moveDeptSelect.selectedIndex = i;
+                        break;
+                    }
+                }
+            }
+            
+            document.getElementById("moveEmployeeModal").style.display = "block";
+            document.getElementById("moveEmployeeOverlay").style.display = "block";
+            document.getElementById("moveEmployeeMessage").innerText = "";
+        }
+
+        function closeMoveEmployeeModal() {
+            document.getElementById("moveEmployeeModal").style.display = "none";
+            document.getElementById("moveEmployeeOverlay").style.display = "none";
+        }
+
+        function moveEmployee() {
+            let moveInfoText = document.getElementById("moveEmployeeCurrentInfo").innerText;
+            let username = moveInfoText.split("(")[1].split(")")[0];
+            let newDepartment = document.getElementById("newEmployeeDepartmentForMove").value;
+            let messageElement = document.getElementById("moveEmployeeMessage");
+
+            let users = JSON.parse(localStorage.getItem("users"));
+            let employee = users.find(u => u.username === username);
+            
+            if (!employee) {
+                messageElement.innerText = "Employee not found.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            if (employee.department === newDepartment) {
+                messageElement.innerText = "Employee is already in this department.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            employee.department = newDepartment;
+            localStorage.setItem("users", JSON.stringify(users));
+
+            messageElement.innerText = "Employee moved successfully!";
+            messageElement.className = "success-message";
+            
+            // Update the employee list and dropdowns
+            loadEmployeesList();
+            updateDepartmentDropdowns();
+            
+            // Refresh admin panel if needed
+            refreshAdminPanel();
+            
+            // If this employee is currently selected in the superadmin panel, refresh their data
+            if (document.getElementById("employeeSelect").value === username) {
+                loadEmployeeData();
+            }
+            
+            setTimeout(() => {
+                closeMoveEmployeeModal();
+            }, 2000);
+        }
+
+        function deleteEmployee(username) {
+            if (confirm(`Are you sure you want to delete the employee ${username}? This action cannot be undone.`)) {
+                let users = JSON.parse(localStorage.getItem("users"));
+                let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+                let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+                
+                // Remove the employee from users
+                users = users.filter(u => u.username !== username);
+                localStorage.setItem("users", JSON.stringify(users));
+                
+                // Remove their leave balances
+                delete leaveBalances[username];
+                localStorage.setItem("leaveBalances", JSON.stringify(leaveBalances));
+                
+                // Remove their leave requests
+                leaveRequests = leaveRequests.filter(req => req.user !== username);
+                localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+                
+                // Update the employee list and dropdowns
+                loadEmployeesList();
+                updateDepartmentDropdowns();
+                
+                // Refresh admin panel if needed
+                refreshAdminPanel();
+                
+                // If this employee was currently selected, clear the selection
+                if (document.getElementById("employeeSelect").value === username) {
+                    document.getElementById("employeeSelect").value = "";
+                    document.getElementById("employeeDataContainer").classList.add("hidden");
+                }
+            }
+        }
+
+        function loadEmployeesList() {
+            let users = JSON.parse(localStorage.getItem("users"));
+            let employeeList = document.getElementById("employeeList");
+            employeeList.innerHTML = "";
+            
+            // Filter out superadmin (can't be deleted)
+            let employees = users.filter(user => user.role !== "superadmin");
+            
+            if (employees.length === 0) {
+                employeeList.innerHTML = "<p>No employees found.</p>";
+                return;
+            }
+            
+            employees.forEach(employee => {
+                let empItem = document.createElement("div");
+                empItem.className = "employee-item";
+                
+                let adminInfo = "";
+                if (employee.role === "admin" && employee.supervisedDepartment) {
+                    adminInfo = ` (Supervises: ${employee.supervisedDepartment})`;
+                }
+                
+                empItem.innerHTML = `
+                    <span>${employee.name} (${employee.username}) - ${employee.role} - ${employee.department}${adminInfo}</span>
+                    <div>
+                        <button class="btn-warning btn-sm" onclick="openMoveEmployeeModal('${employee.username}')">
+                            <i class="fas fa-exchange-alt"></i> Move
+                        </button>
+                        <button class="btn-danger btn-sm" onclick="deleteEmployee('${employee.username}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                `;
+                employeeList.appendChild(empItem);
+            });
+        }
+
+        // Refresh admin panel when changes are made
+        function refreshAdminPanel() {
+            let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (loggedInUser && loggedInUser.role === "admin") {
+                loadAdminEmployees();
+            }
+        }
+
+        function togglePasswordVisibility(inputId) {
+            const passwordInput = document.getElementById(inputId);
+            const toggleIcon = passwordInput.nextElementSibling.querySelector('i');
+            
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                toggleIcon.classList.remove("fa-eye");
+                toggleIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                toggleIcon.classList.remove("fa-eye-slash");
+                toggleIcon.classList.add("fa-eye");
+            }
+        }
+
+        function toggleLeaveBalanceTable(panelType) {
+            let table;
+            if (panelType === 'user') {
+                table = document.getElementById('userLeaveBalancesTable');
+            } else if (panelType === 'admin') {
+                table = document.getElementById('adminEmployeeLeaveBalancesTable');
+            } else if (panelType === 'superadmin') {
+                table = document.getElementById('employeeLeaveBalancesTable');
+            }
+            
+            if (table) {
+                table.classList.toggle('visible');
+            }
+        }
+
+        function togglePublicHolidays(panelType) {
+            let container;
+            if (panelType === 'user') {
+                container = document.getElementById('userPublicHolidaysList');
+            } else if (panelType === 'admin') {
+                container = document.getElementById('adminPublicHolidaysList');
+            } else if (panelType === 'superadmin') {
+                container = document.getElementById('superadminPublicHolidaysList');
+            }
+            
+            if (container) {
+                container.classList.toggle('hidden');
+                if (!container.classList.contains('hidden')) {
+                    loadPublicHolidays(panelType);
+                }
+            }
+        }
+
+        function toggleUnrecordedLeaves(panelType) {
+            let container;
+            if (panelType === 'user') {
+                container = document.getElementById('userUnrecordedLeavesList');
+            } else if (panelType === 'admin') {
+                container = document.getElementById('adminUnrecordedLeavesList');
+            } else if (panelType === 'superadmin') {
+                container = document.getElementById('superadminUnrecordedLeavesList');
+            }
+            
+            if (container) {
+                container.classList.toggle('hidden');
+                if (!container.classList.contains('hidden')) {
+                    loadUnrecordedLeaves(panelType);
+                }
+            }
+        }
+
+        function openChangePasswordModal() {
+            document.getElementById("changePasswordModal").style.display = "block";
+            document.getElementById("changePasswordOverlay").style.display = "block";
+            document.getElementById("currentPassword").value = "";
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmNewPassword").value = "";
+            document.getElementById("passwordMessage").innerText = "";
+        }
+
+        function closeChangePasswordModal() {
+            document.getElementById("changePasswordModal").style.display = "none";
+            document.getElementById("changePasswordOverlay").style.display = "none";
+            document.getElementById("currentPassword").value = "";
+            document.getElementById("newPassword").value = "";
+            document.getElementById("confirmNewPassword").value = "";
+            document.getElementById("passwordMessage").innerText = "";
+        }
+
+        function validatePassword() {
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmNewPassword = document.getElementById("confirmNewPassword").value;
+            let passwordMessage = document.getElementById("passwordMessage");
+
+            if (newPassword !== confirmNewPassword) {
+                passwordMessage.innerText = "New passwords do not match.";
+                passwordMessage.className = "error-message";
+                return false;
+            }
+
+            let passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            if (!passwordRegex.test(newPassword)) {
+                passwordMessage.innerText = "Password must be at least 8 characters long and include at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 special character.";
+                passwordMessage.className = "error-message";
+                return false;
+            }
+
+            passwordMessage.innerText = "";
+            return true;
+        }
+
+        function changePassword() {
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let currentPassword = document.getElementById("currentPassword").value;
+            let newPassword = document.getElementById("newPassword").value;
+            let confirmNewPassword = document.getElementById("confirmNewPassword").value;
+            let passwordMessage = document.getElementById("passwordMessage");
+
+            if (currentPassword !== user.password) {
+                passwordMessage.innerText = "Current password is incorrect.";
+                passwordMessage.className = "error-message";
+                return;
+            }
+
+            if (!validatePassword()) {
+                return;
+            }
+
+            let updatedUsers = JSON.parse(localStorage.getItem("users"));
+            let userIndex = updatedUsers.findIndex(u => u.username === user.username);
+            updatedUsers[userIndex].password = newPassword;
+
+            localStorage.setItem("users", JSON.stringify(updatedUsers));
+            user.password = newPassword;
+            localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+            passwordMessage.innerText = "Password changed successfully!";
+            passwordMessage.className = "success-message";
+
+            setTimeout(() => {
+                closeChangePasswordModal();
+            }, 2000);
+        }
+
+        function showEmployeeLogin() {
+            document.getElementById("employeeLoginPanel").classList.add("active");
+            document.getElementById("adminLoginPanel").classList.remove("active");
+            document.getElementById("superAdminLoginPanel").classList.remove("active");
+            // Clear other password fields
+            document.getElementById("adminPassword").value = "";
+            document.getElementById("superAdminPassword").value = "";
+            document.getElementById("message").innerText = "";
+        }
+
+        function showAdminLogin() {
+            document.getElementById("employeeLoginPanel").classList.remove("active");
+            document.getElementById("adminLoginPanel").classList.add("active");
+            document.getElementById("superAdminLoginPanel").classList.remove("active");
+            // Clear other password fields
+            document.getElementById("employeePassword").value = "";
+            document.getElementById("superAdminPassword").value = "";
+            document.getElementById("message").innerText = "";
+        }
+
+        function showSuperAdminLogin() {
+            document.getElementById("employeeLoginPanel").classList.remove("active");
+            document.getElementById("adminLoginPanel").classList.remove("active");
+            document.getElementById("superAdminLoginPanel").classList.add("active");
+            // Clear other password fields
+            document.getElementById("employeePassword").value = "";
+            document.getElementById("adminPassword").value = "";
+            document.getElementById("message").innerText = "";
+        }
+
+        function login(role) {
+            let username, password;
+            if (role === "employee") {
+                username = document.getElementById("employeeUsername").value;
+                password = document.getElementById("employeePassword").value;
+            } else if (role === "admin") {
+                username = document.getElementById("adminUsername").value;
+                password = document.getElementById("adminPassword").value;
+            } else if (role === "superadmin") {
+                username = document.getElementById("superAdminUsername").value;
+                password = document.getElementById("superAdminPassword").value;
+            }
+
+            let users = JSON.parse(localStorage.getItem("users"));
+            let user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                localStorage.setItem("loginPanelType", role);
+                localStorage.setItem("loggedInUser", JSON.stringify(user));
+                loadPage();
+                resetLeaveForm();
+            } else {
+                document.getElementById("message").innerText = "Invalid credentials. Try again.";
+                document.getElementById("message").className = "error-message";
+            }
+        }
+
+        function clearErrorMessage() {
+            document.getElementById("message").innerText = "";
+        }
+
+        function loadPage() {
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let loginPanelType = localStorage.getItem("loginPanelType");
+
+            if (!user) {
+                document.getElementById("loginPage").style.display = "block";
+                document.getElementById("userPage").style.display = "none";
+                document.getElementById("adminPage").style.display = "none";
+                document.getElementById("superAdminPage").style.display = "none";
+            } else if (loginPanelType === "employee") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("userPage").style.display = "block";
+                document.getElementById("adminPage").style.display = "none";
+                document.getElementById("superAdminPage").style.display = "none";
+                updateRemainingLeaves(user.username);
+                loadEmployeeRequests(user.username);
+                initializeCalendar();
+                toggleLeaveTypeFields();
+            } else if (loginPanelType === "admin" && user.role === "admin") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("userPage").style.display = "none";
+                document.getElementById("adminPage").style.display = "block";
+                document.getElementById("superAdminPage").style.display = "none";
+                loadAdminEmployees();
+            } else if (loginPanelType === "superadmin" && user.role === "superadmin") {
+                document.getElementById("loginPage").style.display = "none";
+                document.getElementById("userPage").style.display = "none";
+                document.getElementById("adminPage").style.display = "none";
+                document.getElementById("superAdminPage").style.display = "block";
+                loadSuperAdminData();
+                
+                // Load department and employee lists
+                loadDepartmentsList();
+                loadEmployeesList();
+                updateDepartmentDropdowns();
+            } else {
+                document.getElementById("message").innerText = "You do not have permission to access this panel.";
+                document.getElementById("message").className = "error-message";
+                logout();
+            }
+        }
+
+        function initializeCalendar() {
+            let publicHolidays = JSON.parse(localStorage.getItem("publicHolidays"));
+            let unrecordedLeaves = JSON.parse(localStorage.getItem("unrecordedLeaves"));
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            
+            // Initialize date pickers for public holidays and unrecorded leaves
+            flatpickr("#publicHolidayDate", {
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        return (date.getDay() === 0 || date.getDay() === 6);
+                    }
+                ]
+            });
+            
+            flatpickr("#unrecordedLeaveDate", {
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        return (date.getDay() === 0 || date.getDay() === 6);
+                    }
+                ]
+            });
+            
+            // Get all disabled dates from public holidays
+            let disabledDates = publicHolidays.map(holiday => holiday.date);
+            
+            // Add unrecorded leave dates that apply to this user
+            unrecordedLeaves.forEach(leave => {
+                if (leave.scope === "all" || (leave.scope === "some" && leave.employees.includes(user.username))) {
+                    disabledDates.push(leave.date);
+                }
+            });
+
+            flatpickr("#startDate", {
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        return (date.getDay() === 0 || date.getDay() === 6);
+                    },
+                    ...disabledDates
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    document.getElementById("startDate").value = dateStr;
+                }
+            });
+
+            flatpickr("#endDate", {
+                dateFormat: "Y-m-d",
+                disable: [
+                    function(date) {
+                        return (date.getDay() === 0 || date.getDay() === 6);
+                    },
+                    ...disabledDates
+                ],
+                onChange: function(selectedDates, dateStr, instance) {
+                    document.getElementById("endDate").value = dateStr;
+                }
+            });
+        }
+
+        function logout() {
+            // Clear password fields
+            document.getElementById("employeePassword").value = "";
+            document.getElementById("adminPassword").value = "";
+            document.getElementById("superAdminPassword").value = "";
+            
+            // Clear logged in user
+            localStorage.removeItem("loggedInUser");
+            localStorage.removeItem("loginPanelType");
+            loadPage();
+        }
+
+        function toggleLeaveTypeFields() {
+            let leaveType = document.getElementById("leaveType").value;
+            let endDateContainer = document.getElementById("endDateContainer");
+            let halfDayTimeContainer = document.getElementById("halfDayTimeContainer");
+
+            if (leaveType === "Half Day") {
+                endDateContainer.classList.add("hidden");
+                halfDayTimeContainer.classList.remove("hidden");
+            } else {
+                endDateContainer.classList.remove("hidden");
+                halfDayTimeContainer.classList.add("hidden");
+            }
+        }
+
+        function toggleHalfDayTime() {
+            let holidayType = document.getElementById("publicHolidayType").value;
+            let halfDayTimeHolidayContainer = document.getElementById("halfDayTimeHolidayContainer");
+
+            if (holidayType === "Half Day") {
+                halfDayTimeHolidayContainer.classList.remove("hidden");
+            } else {
+                halfDayTimeHolidayContainer.classList.add("hidden");
+            }
+        }
+
+        function toggleUnrecordedHalfDayTime() {
+            let leaveType = document.getElementById("unrecordedLeaveType").value;
+            let halfDayTimeContainer = document.getElementById("halfDayTimeUnrecordedContainer");
+
+            if (leaveType === "Half Day") {
+                halfDayTimeContainer.classList.remove("hidden");
+            } else {
+                halfDayTimeContainer.classList.add("hidden");
+            }
+        }
+
+        function applyLeave() {
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let leaveReason = document.getElementById("leaveReason").value;
+            let leaveType = document.getElementById("leaveType").value;
+            let halfDayTime = leaveType === "Half Day" ? document.getElementById("halfDayTime").value : null;
+            let startDate = document.getElementById("startDate").value;
+            let endDate = leaveType === "Half Day" ? startDate : document.getElementById("endDate").value;
+            let documents = document.getElementById("documents").files;
+            let messageElement = document.getElementById("userMessage");
+
+            if (!startDate) {
+                messageElement.innerText = "Please select a start date.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            if (leaveType === "Full Day" && !endDate) {
+                messageElement.innerText = "Please select an end date.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            if (leaveReason !== "Annual Leave" && documents.length === 0) {
+                messageElement.innerText = "Please upload supporting documents.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            let remainingDays = leaveBalances[user.username][leaveReason];
+
+            let daysRequested = calculateWorkingDays(new Date(startDate), new Date(endDate));
+
+            if (leaveType === "Half Day") {
+                daysRequested = 0.5;
+            }
+
+            if (daysRequested > remainingDays) {
+                messageElement.innerText = `Not enough ${leaveReason} days available.`;
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+            leaveRequests.push({
+                id: Date.now(),
+                user: user.username,
+                department: user.department,
+                leaveReason,
+                leaveType,
+                halfDayTime,
+                startDate,
+                endDate,
+                status: "Pending",
+                daysRequested,
+                documents: leaveReason !== "Annual Leave" ? Array.from(documents).map(file => file.name) : [],
+                rejectReason: ""
+            });
+            localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+
+            messageElement.innerText = "Leave request submitted!";
+            messageElement.className = "success-message";
+            loadEmployeeRequests(user.username);
+            resetLeaveForm();
+        }
+
+        function resetLeaveForm() {
+            document.getElementById("leaveReason").value = "Annual Leave";
+            document.getElementById("leaveType").value = "Half Day";
+            document.getElementById("halfDayTime").value = "Morning";
+            document.getElementById("startDate").value = "";
+            document.getElementById("endDate").value = "";
+            document.getElementById("documents").value = "";
+            document.getElementById("userMessage").innerText = "";
+            toggleLeaveTypeFields();
+        }
+
+        function calculateWorkingDays(startDate, endDate) {
+            let count = 0;
+            let currentDate = new Date(startDate);
+            let publicHolidays = JSON.parse(localStorage.getItem("publicHolidays"));
+            let holidayDates = publicHolidays.map(holiday => new Date(holiday.date).toDateString());
+
+            while (currentDate <= endDate) {
+                if (currentDate.getDay() !== 0 && currentDate.getDay() !== 6) {
+                    if (!holidayDates.includes(currentDate.toDateString())) {
+                        count++;
+                    }
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return count;
+        }
+
+        function updateRemainingLeaves(username) {
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            let tableBody = document.getElementById("userLeaveBalancesTable").querySelector("tbody");
+            tableBody.innerHTML = "";
+
+            Object.entries(leaveBalances[username]).forEach(([type, balance]) => {
+                let row = document.createElement("tr");
+                let cell1 = document.createElement("td");
+                cell1.innerText = type;
+                let cell2 = document.createElement("td");
+                cell2.innerText = balance;
+                row.appendChild(cell1);
+                row.appendChild(cell2);
+                tableBody.appendChild(row);
+            });
+        }
+
+        function loadEmployeeRequests(username) {
+            let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+            let employeeRequestsContainer = document.getElementById("employeeRequests");
+            employeeRequestsContainer.innerHTML = "";
+
+            // Filter out unrecorded leaves (they'll be shown in the unrecorded leaves section)
+            let userRequests = leaveRequests.filter(req => req.user === username && !req.isUnrecorded);
+
+            if (userRequests.length === 0) {
+                employeeRequestsContainer.innerHTML = "<p>No leave requests found.</p>";
+                return;
+            }
+
+            userRequests.forEach(request => {
+                let leaveCard = document.createElement("div");
+                leaveCard.className = "card";
+                leaveCard.innerHTML = `
+                    <p><b>${request.leaveReason}</b>: ${request.startDate} - ${request.endDate} - <b>${request.status}</b></p>
+                    <p><b>Days Deducted:</b> ${request.daysRequested}</p>
+                    <p><b>Leave Type:</b> ${request.leaveType} ${request.leaveType === "Half Day" ? `(${request.halfDayTime})` : ""}</p>
+                    ${request.status === "Rejected" ? `<p><b>Rejection Reason:</b> ${request.rejectReason}</p>` : ""}
+                    ${request.documents ? `<p><b>Documents:</b> ${request.documents.map(doc => `<a href="#" onclick="openDocument('${doc}')">${doc}</a>`).join(", ")}</p>` : ""}
+                `;
+                employeeRequestsContainer.appendChild(leaveCard);
+            });
+        }
+
+        function loadAdminEmployees() {
+            let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+            let employeeSelect = document.getElementById("adminEmployeeSelect");
+            employeeSelect.innerHTML = "<option value=''>-- Select an Employee --</option>";
+            
+            document.getElementById("adminEmployeeDataContainer").classList.add("hidden");
+
+            let users = JSON.parse(localStorage.getItem("users"));
+            let departmentEmployees = users.filter(user => 
+                user.department === loggedInUser.department && 
+                user.role === "employee" &&
+                user.username !== loggedInUser.username
+            );
+
+            if (loggedInUser.department === "Department 1") {
+                let superAdmin = users.find(user => user.role === "superadmin");
+                if (superAdmin) {
+                    departmentEmployees.push(superAdmin);
+                }
+            }
+
+            if (loggedInUser.username === "admin5") {
+                let managedAdmins = users.filter(user => user.managedBy === "admin5");
+                departmentEmployees = departmentEmployees.concat(managedAdmins);
+            }
+
+            departmentEmployees.forEach(employee => {
+                let option = document.createElement("option");
+                option.value = employee.username;
+                option.innerText = employee.username;
+                employeeSelect.appendChild(option);
+            });
+        }
+
+        function loadAdminEmployeeData() {
+            let employeeSelect = document.getElementById("adminEmployeeSelect");
+            let selectedEmployee = employeeSelect.value;
+            let employeeDataContainer = document.getElementById("adminEmployeeDataContainer");
+
+            if (selectedEmployee) {
+                employeeDataContainer.classList.remove("hidden");
+                
+                let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+                let employeeBalances = leaveBalances[selectedEmployee];
+
+                let tableBody = document.getElementById("adminEmployeeLeaveBalancesTable").querySelector("tbody");
+                tableBody.innerHTML = "";
+
+                Object.entries(employeeBalances).forEach(([type, balance]) => {
+                    let row = document.createElement("tr");
+                    let cell1 = document.createElement("td");
+                    cell1.innerText = type;
+                    let cell2 = document.createElement("td");
+                    cell2.innerText = balance;
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    tableBody.appendChild(row);
+                });
+
+                let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+                let requestsList = document.getElementById("adminEmployeeLeaveRequestsList");
+                requestsList.innerHTML = "";
+
+                // Filter out unrecorded leaves (they'll be shown in the unrecorded leaves section)
+                let employeeRequests = leaveRequests.filter(request => 
+                    request.user === selectedEmployee && 
+                    !request.isUnrecorded
+                );
+
+                if (employeeRequests.length === 0) {
+                    requestsList.innerHTML = "<p>No leave requests found for this employee.</p>";
+                    return;
+                }
+
+                employeeRequests.forEach(request => {
+                    let leaveCard = document.createElement("div");
+                    leaveCard.className = "card";
+                    leaveCard.innerHTML = `
+                        <p><b>${request.leaveReason}</b>: ${request.startDate} - ${request.endDate} - <b>${request.status}</b></p>
+                        <p><b>Days Deducted:</b> ${request.daysRequested}</p>
+                        <p><b>Leave Type:</b> ${request.leaveType} ${request.leaveType === "Half Day" ? `(${request.halfDayTime})` : ""}</p>
+                        ${request.status === "Pending" ? `
+                            <div class="action-buttons">
+                                <button class="btn-success" onclick="approveLeave(${request.id})">Approve</button>
+                                <button class="btn-danger" onclick="showRejectReasonBox(${request.id})">Reject</button>
+                            </div>
+                        ` : ""}
+                        ${request.status === "Rejected" ? `<p><b>Rejection Reason:</b> ${request.rejectReason}</p>` : ""}
+                        ${request.documents ? `<p><b>Documents:</b> ${request.documents.map(doc => `<a href="#" onclick="openDocument('${doc}')">${doc}</a>`).join(", ")}</p>` : ""}
+                    `;
+                    requestsList.appendChild(leaveCard);
+                });
+            } else {
+                employeeDataContainer.classList.add("hidden");
+            }
+        }
+
+        function loadSuperAdminData() {
+            loadEmployees();
+        }
+
+        function loadPublicHolidays(panelType) {
+            let publicHolidays = JSON.parse(localStorage.getItem("publicHolidays"));
+            let holidaysList;
+            
+            if (panelType === 'user') {
+                holidaysList = document.getElementById("userPublicHolidaysList");
+            } else if (panelType === 'admin') {
+                holidaysList = document.getElementById("adminPublicHolidaysList");
+            } else if (panelType === 'superadmin') {
+                holidaysList = document.getElementById("superadminPublicHolidaysList");
+            } else {
+                return;
+            }
+            
+            holidaysList.innerHTML = "";
+
+            if (publicHolidays.length === 0) {
+                holidaysList.innerHTML = "<p>No public holidays added yet.</p>";
+                return;
+            }
+
+            publicHolidays.forEach(holiday => {
+                let holidayCard = document.createElement("div");
+                holidayCard.className = "card";
+                holidayCard.innerHTML = `
+                    <p><b>${holiday.date}</b>: ${holiday.name} (${holiday.type}) ${holiday.type === "Half Day" ? `(${holiday.halfDayTime})` : ""}</p>
+                `;
+                holidaysList.appendChild(holidayCard);
+            });
+        }
+
+        function loadUnrecordedLeaves(panelType) {
+            let unrecordedLeaves = JSON.parse(localStorage.getItem("unrecordedLeaves"));
+            let user = JSON.parse(localStorage.getItem("loggedInUser"));
+            let leavesList;
+            
+            if (panelType === 'user') {
+                leavesList = document.getElementById("userUnrecordedLeavesList");
+            } else if (panelType === 'admin') {
+                leavesList = document.getElementById("adminUnrecordedLeavesList");
+            } else if (panelType === 'superadmin') {
+                leavesList = document.getElementById("superadminUnrecordedLeavesList");
+            } else {
+                return;
+            }
+            
+            leavesList.innerHTML = "";
+
+            // Filter leaves based on user access
+            let filteredLeaves = unrecordedLeaves.filter(leave => {
+                if (panelType === 'superadmin') return true;
+                if (leave.scope === 'all') return true;
+                if (leave.scope === 'some' && leave.employees.includes(user.username)) return true;
+                return false;
+            });
+
+            if (filteredLeaves.length === 0) {
+                leavesList.innerHTML = "<p>No unrecorded leaves found.</p>";
+                return;
+            }
+
+            filteredLeaves.forEach(leave => {
+                let leaveCard = document.createElement("div");
+                leaveCard.className = "card";
+                leaveCard.innerHTML = `
+                    <p><b>${leave.date}</b>: ${leave.name} (${leave.type}) ${leave.type === "Half Day" ? `(${leave.halfDayTime})` : ""}</p>
+                    ${panelType === 'superadmin' ? `<p><b>Scope:</b> ${leave.scope === "all" ? "All Employees" : "Selected Employees"}</p>` : ''}
+                    ${panelType === 'superadmin' && leave.scope === "some" ? `<p><b>Employees:</b> ${leave.employees.join(", ")}</p>` : ""}
+                `;
+                leavesList.appendChild(leaveCard);
+            });
+        }
+
+        function loadEmployees() {
+            let department = document.getElementById("departmentSelect").value;
+            let employeeSelect = document.getElementById("employeeSelect");
+            employeeSelect.innerHTML = "<option value=''>-- Select an Employee --</option>";
+            
+            document.getElementById("employeeDataContainer").classList.add("hidden");
+            
+            let users = JSON.parse(localStorage.getItem("users"));
+            let departmentEmployees = users.filter(user => user.department === department && user.role === "employee");
+
+            if (department === "Department 1") {
+                let superAdmin = users.find(user => user.role === "superadmin");
+                if (superAdmin) {
+                    departmentEmployees.push(superAdmin);
+                }
+            }
+
+            if (department === "Department 5") {
+                let admins = users.filter(user => user.managedBy === "admin5");
+                departmentEmployees = departmentEmployees.concat(admins);
+            }
+
+            departmentEmployees.forEach(employee => {
+                let option = document.createElement("option");
+                option.value = employee.username;
+                option.innerText = employee.username;
+                employeeSelect.appendChild(option);
+            });
+        }
+
+        function loadEmployeeData() {
+            let employeeSelect = document.getElementById("employeeSelect");
+            let selectedEmployee = employeeSelect.value;
+            let employeeDataContainer = document.getElementById("employeeDataContainer");
+
+            if (selectedEmployee) {
+                employeeDataContainer.classList.remove("hidden");
+                
+                let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+                let employeeBalances = leaveBalances[selectedEmployee];
+
+                let tableBody = document.getElementById("employeeLeaveBalancesTable").querySelector("tbody");
+                tableBody.innerHTML = "";
+
+                Object.entries(employeeBalances).forEach(([type, balance]) => {
+                    let row = document.createElement("tr");
+                    let cell1 = document.createElement("td");
+                    cell1.innerText = type;
+                    let cell2 = document.createElement("td");
+                    cell2.innerText = balance;
+                    row.appendChild(cell1);
+                    row.appendChild(cell2);
+                    tableBody.appendChild(row);
+                });
+
+                let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+                let requestsList = document.getElementById("employeeLeaveRequestsList");
+                requestsList.innerHTML = "";
+
+                // Filter out unrecorded leaves (they'll be shown in the unrecorded leaves section)
+                let employeeRequests = leaveRequests.filter(request => 
+                    request.user === selectedEmployee && 
+                    !request.isUnrecorded
+                );
+
+                if (employeeRequests.length === 0) {
+                    requestsList.innerHTML = "<p>No leave requests found for this employee.</p>";
+                    return;
+                }
+
+                employeeRequests.forEach(request => {
+                    let leaveCard = document.createElement("div");
+                    leaveCard.className = "card";
+                    leaveCard.innerHTML = `
+                        <p><b>${request.leaveReason}</b>: ${request.startDate} - ${request.endDate} - <b>${request.status}</b></p>
+                        <p><b>Days Deducted:</b> ${request.daysRequested}</p>
+                        <p><b>Leave Type:</b> ${request.leaveType} ${request.leaveType === "Half Day" ? `(${request.halfDayTime})` : ""}</p>
+                        ${request.status === "Pending" ? `
+                            <div class="action-buttons">
+                                <button class="btn-success" onclick="approveLeave(${request.id})">Approve</button>
+                                <button class="btn-danger" onclick="showRejectReasonBox(${request.id})">Reject</button>
+                            </div>
+                        ` : ""}
+                        ${request.status === "Rejected" ? `<p><b>Rejection Reason:</b> ${request.rejectReason}</p>` : ""}
+                        ${request.documents ? `<p><b>Documents:</b> ${request.documents.map(doc => `<a href="#" onclick="openDocument('${doc}')">${doc}</a>`).join(", ")}</p>` : ""}
+                    `;
+                    requestsList.appendChild(leaveCard);
+                });
+            } else {
+                employeeDataContainer.classList.add("hidden");
+            }
+        }
+
+        function openEditBalanceModalForSelectedEmployee() {
+            let selectedEmployee = document.getElementById("employeeSelect").value;
+            if (selectedEmployee) {
+                openEditBalanceModal(selectedEmployee);
+            }
+        }
+
+        function openEditBalanceModal(username) {
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            let employeeBalances = leaveBalances[username];
+
+            document.getElementById("editBalanceEmployeeName").innerText = `Edit Leave Balances for ${username}`;
+            let editBalanceForm = document.getElementById("editBalanceForm");
+            editBalanceForm.innerHTML = "";
+
+            Object.entries(employeeBalances).forEach(([type, balance]) => {
+                editBalanceForm.innerHTML += `
+                    <label>${type}:</label>
+                    <input type="number" id="edit-${type}" value="${balance}" min="0">
+                `;
+            });
+
+            document.getElementById("editBalanceModal").style.display = "block";
+            document.getElementById("editBalanceOverlay").style.display = "block";
+        }
+
+        function saveLeaveBalances() {
+            let username = document.getElementById("editBalanceEmployeeName").innerText.split(" ")[4];
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            let employeeBalances = leaveBalances[username];
+
+            Object.keys(employeeBalances).forEach(type => {
+                let newBalance = document.getElementById(`edit-${type}`).value;
+                employeeBalances[type] = parseInt(newBalance);
+            });
+
+            localStorage.setItem("leaveBalances", JSON.stringify(leaveBalances));
+            document.getElementById("editBalanceMessage").innerText = "Leave balances updated successfully!";
+            document.getElementById("editBalanceMessage").className = "success-message";
+            
+            setTimeout(() => {
+                closeEditBalanceModal();
+                loadEmployeeData();
+            }, 2000);
+        }
+
+        function closeEditBalanceModal() {
+            document.getElementById("editBalanceModal").style.display = "none";
+            document.getElementById("editBalanceOverlay").style.display = "none";
+        }
+
+        function openAddHolidayTab() {
+            document.getElementById("addHolidayModal").style.display = "block";
+            document.getElementById("addHolidayOverlay").style.display = "block";
+            document.getElementById("publicHolidayDate").value = "";
+            document.getElementById("publicHolidayName").value = "";
+            document.getElementById("publicHolidayType").value = "Full Day";
+            document.getElementById("halfDayTimeHolidayContainer").classList.add("hidden");
+            document.getElementById("holidayMessage").innerText = "";
+        }
+
+        function addPublicHoliday() {
+            let date = document.getElementById("publicHolidayDate").value;
+            let name = document.getElementById("publicHolidayName").value;
+            let type = document.getElementById("publicHolidayType").value;
+            let halfDayTime = type === "Half Day" ? document.getElementById("halfDayTimeHoliday").value : null;
+            let messageElement = document.getElementById("holidayMessage");
+
+            if (!date || !name) {
+                messageElement.innerText = "Please enter both date and name for the public holiday.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let publicHolidays = JSON.parse(localStorage.getItem("publicHolidays"));
+            publicHolidays.push({ date, name, type, halfDayTime });
+            localStorage.setItem("publicHolidays", JSON.stringify(publicHolidays));
+
+            messageElement.innerText = "Public holiday added successfully!";
+            messageElement.className = "success-message";
+            
+            setTimeout(() => {
+                closeAddHolidayTab();
+                loadPublicHolidays('superadmin');
+            }, 2000);
+        }
+
+        function closeAddHolidayTab() {
+            document.getElementById("addHolidayModal").style.display = "none";
+            document.getElementById("addHolidayOverlay").style.display = "none";
+            document.getElementById("publicHolidayDate").value = "";
+            document.getElementById("publicHolidayName").value = "";
+            document.getElementById("publicHolidayType").value = "Full Day";
+            document.getElementById("halfDayTimeHolidayContainer").classList.add("hidden");
+            document.getElementById("holidayMessage").innerText = "";
+        }
+
+        function openUnrecordedLeaveModal(scope) {
+            document.getElementById("unrecordedLeaveModal").style.display = "block";
+            document.getElementById("unrecordedLeaveOverlay").style.display = "block";
+            document.getElementById("unrecordedLeaveDate").value = "";
+            document.getElementById("unrecordedLeaveName").value = "";
+            document.getElementById("unrecordedLeaveType").value = "Full Day";
+            document.getElementById("halfDayTimeUnrecordedContainer").classList.add("hidden");
+            document.getElementById("unrecordedLeaveMessage").innerText = "";
+            
+            if (scope === 'some') {
+                document.getElementById("unrecordedLeaveTitle").innerText = "Add Unrecorded Leave for Selected Employees";
+                document.getElementById("employeeSelectionContainer").classList.remove("hidden");
+                loadEmployeeCheckboxes();
+            } else {
+                document.getElementById("unrecordedLeaveTitle").innerText = "Add Unrecorded Leave for All Employees";
+                document.getElementById("employeeSelectionContainer").classList.add("hidden");
+            }
+        }
+
+        function closeUnrecordedLeaveModal() {
+            document.getElementById("unrecordedLeaveModal").style.display = "none";
+            document.getElementById("unrecordedLeaveOverlay").style.display = "none";
+            document.getElementById("employeeSelectionContainer").classList.add("hidden");
+        }
+
+        function loadEmployeeCheckboxes() {
+            let checkboxesContainer = document.getElementById("employeeCheckboxes");
+            checkboxesContainer.innerHTML = "";
+            
+            let users = JSON.parse(localStorage.getItem("users"));
+            let employees = users.filter(user => user.role === "employee" || (user.role === "admin" && user.username !== "admin5"));
+            
+            employees.forEach(employee => {
+                let label = document.createElement("label");
+                let checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.value = employee.username;
+                checkbox.id = "emp_" + employee.username;
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(employee.username));
+                checkboxesContainer.appendChild(label);
+            });
+        }
+
+        function addUnrecordedLeave() {
+            let date = document.getElementById("unrecordedLeaveDate").value;
+            let name = document.getElementById("unrecordedLeaveName").value;
+            let type = document.getElementById("unrecordedLeaveType").value;
+            let halfDayTime = type === "Half Day" ? document.getElementById("halfDayTimeUnrecorded").value : null;
+            let scope = document.getElementById("employeeSelectionContainer").classList.contains("hidden") ? "all" : "some";
+            let messageElement = document.getElementById("unrecordedLeaveMessage");
+
+            if (!date || !name) {
+                messageElement.innerText = "Please enter both date and name for the unrecorded leave.";
+                messageElement.className = "error-message";
+                return;
+            }
+
+            let unrecordedLeaves = JSON.parse(localStorage.getItem("unrecordedLeaves"));
+            let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+            let users = JSON.parse(localStorage.getItem("users"));
+            
+            let selectedEmployees = [];
+            if (scope === 'some') {
+                let checkboxes = document.querySelectorAll('#employeeCheckboxes input[type="checkbox"]:checked');
+                checkboxes.forEach(checkbox => {
+                    selectedEmployees.push(checkbox.value);
+                });
+                
+                if (selectedEmployees.length === 0) {
+                    messageElement.innerText = "Please select at least one employee.";
+                    messageElement.className = "error-message";
+                    return;
+                }
+            } else {
+                // For 'all' scope, include all employees and admins (except admin5)
+                selectedEmployees = users
+                    .filter(user => user.role === "employee" || (user.role === "admin" && user.username !== "admin5"))
+                    .map(user => user.username);
+            }
+
+            // Add to unrecorded leaves list
+            unrecordedLeaves.push({
+                date,
+                name,
+                type,
+                halfDayTime,
+                scope,
+                employees: scope === 'some' ? selectedEmployees : []
+            });
+            localStorage.setItem("unrecordedLeaves", JSON.stringify(unrecordedLeaves));
+
+            // Add leave requests for each selected employee
+            selectedEmployees.forEach(username => {
+                leaveRequests.push({
+                    id: Date.now() + Math.random(), // Unique ID
+                    user: username,
+                    department: users.find(u => u.username === username).department,
+                    leaveReason: "Unrecorded Leave",
+                    leaveType: type,
+                    halfDayTime: halfDayTime,
+                    startDate: date,
+                    endDate: date,
+                    status: "Approved",
+                    daysRequested: type === "Half Day" ? 0.5 : 1,
+                    documents: [],
+                    rejectReason: "",
+                    isUnrecorded: true
+                });
+            });
+
+            localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+            messageElement.innerText = "Unrecorded leave added successfully!";
+            messageElement.className = "success-message";
+            
+            setTimeout(() => {
+                closeUnrecordedLeaveModal();
+                loadUnrecordedLeaves('superadmin');
+                
+                // Refresh the employee data if viewing someone
+                if (document.getElementById("employeeSelect") && document.getElementById("employeeSelect").value) {
+                    loadEmployeeData();
+                }
+            }, 2000);
+        }
+
+        function openDocument(docName) {
+            let documentPath = `uploads/${docName}`;
+            window.open(documentPath, '_blank');
+        }
+
+        function showRejectReasonBox(id) {
+            let rejectReason = prompt("Please enter the reason for rejection:");
+            if (rejectReason !== null && rejectReason.trim() !== "") {
+                rejectLeave(id, rejectReason);
+            }
+        }
+
+        function rejectLeave(id, reason) {
+            let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+            let request = leaveRequests.find(req => req.id === id);
+
+            if (request) {
+                request.status = "Rejected";
+                request.rejectReason = reason;
+                localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+                
+                // Refresh the appropriate view
+                let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+                if (loggedInUser.role === "admin") {
+                    loadAdminEmployeeData();
+                } else if (loggedInUser.role === "superadmin") {
+                    loadEmployeeData();
+                }
+            }
+        }
+
+        function approveLeave(id) {
+            let leaveRequests = JSON.parse(localStorage.getItem("leaveRequests"));
+            let leaveBalances = JSON.parse(localStorage.getItem("leaveBalances"));
+            let request = leaveRequests.find(req => req.id === id);
+
+            if (request) {
+                leaveBalances[request.user][request.leaveReason] -= request.daysRequested;
+                localStorage.setItem("leaveBalances", JSON.stringify(leaveBalances));
+
+                request.status = "Approved";
+                localStorage.setItem("leaveRequests", JSON.stringify(leaveRequests));
+
+                // Refresh the appropriate view
+                let loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+                if (loggedInUser.role === "admin") {
+                    loadAdminEmployeeData();
+                } else if (loggedInUser.role === "superadmin") {
+                    loadEmployeeData();
+                }
+            }
+        }
+    </script>
+</body>
+</html>
