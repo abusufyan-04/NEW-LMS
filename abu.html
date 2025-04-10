@@ -1,0 +1,3740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archipelago Group - Leave Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --danger: #e74c3c;
+            --warning: #f39c12;
+            --info: #1abc9c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --white: #ffffff;
+            --gray: #95a5a6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: var(--light);
+        }
+
+        .login-card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 30px;
+            position: relative;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .login-logo span {
+            color: var(--secondary);
+        }
+
+        .login-title {
+            font-size: 18px;
+            color: var(--dark);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--light);
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .password-container {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 20px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .btn-success:hover {
+            background-color: #219653;
+        }
+
+        .btn-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-warning {
+            background-color: var(--warning);
+            color: var(--white);
+        }
+
+        .btn-warning:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-info {
+            background-color: var(--info);
+            color: var(--white);
+        }
+
+        .btn-info:hover {
+            background-color: #16a085;
+        }
+
+        .btn-sm {
+            padding: 5px 10px;
+            font-size: 12px;
+        }
+
+        .btn-block {
+            display: block;
+            width: 100%;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th, .table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .table th {
+            background-color: var(--primary);
+            color: var(--white);
+        }
+
+        .table tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-success {
+            background-color: var(--success);
+            color: var(--white);
+        }
+
+        .badge-warning {
+            background-color: var(--warning);
+            color: var(--white);
+        }
+
+        .badge-danger {
+            background-color: var(--danger);
+            color: var(--white);
+        }
+
+        .badge-info {
+            background-color: var(--info);
+            color: var(--white);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--light);
+            border-radius: 4px;
+            font-size: 14px;
+            background-color: var(--white);
+        }
+
+        .form-select:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--light);
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab.active {
+            border-bottom: 2px solid var(--secondary);
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .leave-balance-card {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .balance-item {
+            flex: 1;
+            min-width: 150px;
+            background-color: var(--light);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .balance-item h3 {
+            font-size: 14px;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .balance-item p {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            color: var(--primary);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid var(--light);
+        }
+
+        .password-requirements {
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--gray);
+        }
+
+        .requirement {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3px;
+        }
+
+        .requirement i {
+            margin-right: 5px;
+            font-size: 10px;
+        }
+
+        .requirement.valid {
+            color: var(--success);
+        }
+
+        .requirement.invalid {
+            color: var(--gray);
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            margin-right: 15px;
+            font-size: 20px;
+            color: var(--white);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .leave-balance-toggle {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 15px;
+        }
+
+        .leave-balance-table {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .leave-balance-table.show {
+            display: block;
+        }
+
+        .employee-checkbox-list {
+            max-height: 200px;
+            overflow-y: auto;
+            border: 1px solid var(--light);
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .employee-checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 5px 0;
+        }
+
+        .employee-checkbox-item input {
+            margin-right: 10px;
+        }
+
+        .employee-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--light);
+        }
+
+        .card-title {
+            font-size: 18px;
+            color: var(--primary);
+        }
+
+        .text-muted {
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 15px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #ddd;
+        }
+
+        .logout-btn {
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .sidebar {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px;
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: var(--secondary);
+            color: var(--white);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .main-content {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+        }
+
+        .info-icon {
+            position: absolute;
+            right: 30px;
+            top: 145px;
+            color: var(--secondary);
+            cursor: pointer;
+        }
+
+        .info-tooltip {
+            position: absolute;
+            background-color: var(--dark);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            width: 250px;
+            right: 30px;
+            top: 170px;
+            display: none;
+            z-index: 100;
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                margin-bottom: 20px;
+            }
+
+            .leave-balance-card {
+                flex-direction: column;
+            }
+            
+            .employee-actions {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">Archipelago <span>LMS</span></div>
+                <div class="login-title">Leave Management System</div>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" id="username" class="form-control" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="password-container">
+                        <input type="password" id="password" class="form-control" placeholder="Enter your password" required>
+                        <span class="toggle-password"><i class="far fa-eye"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                </div>
+            </form>
+            <div class="login-footer">
+                <a href="#" id="forgotPasswordLink">Forgot Password?</a>
+            </div>
+            <i class="fas fa-info-circle info-icon" id="infoIcon"></i>
+            <div class="info-tooltip" id="infoTooltip">
+                USE THE NAME IN YOUR EMAIL<br>
+                Example: mags@archipelagogrp.com<br>
+                USERNAME: mags
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Pages -->
+    <div id="dashboardPage" style="display: none;">
+        <header>
+            <div class="container header-content">
+                <div class="logo">
+                    <img src="https://via.placeholder.com/150x50?text=Archipelago+Group" alt="Company Logo">
+                    <span>Archipelago <span>LMS</span></span>
+                </div>
+                <div class="user-info">
+                    <span id="welcomeMessage">Welcome, User</span>
+                    <div class="notification-bell" id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">0</span>
+                    </div>
+                    <img id="userAvatar" src="" alt="User Profile">
+                    <button class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                </div>
+            </div>
+        </header>
+
+        <div class="container">
+            <div class="dashboard">
+                <div class="sidebar">
+                    <ul class="sidebar-menu" id="sidebarMenu">
+                        <!-- Dynamic sidebar content will be inserted here based on user role -->
+                    </ul>
+                </div>
+
+                <div class="main-content" id="mainContent">
+                    <!-- Dynamic main content will be inserted here based on user role and selected menu -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Common Modals -->
+    <div class="modal" id="applyLeaveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Apply for Leave</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="leaveForm">
+                <div class="form-group">
+                    <label for="leaveType" class="form-label">Leave Type</label>
+                    <select id="leaveType" class="form-select" required>
+                        <option value="">Select Leave Type</option>
+                        <option value="annual">Annual Leave</option>
+                        <option value="emergency">Emergency Leave</option>
+                        <option value="unpaid">Unpaid Leave</option>
+                        <option value="medical">Medical Leave</option>
+                        <option value="marriage">Marriage Leave</option>
+                        <option value="maternity">Maternity Leave (60 days)</option>
+                        <option value="paternity">Paternity Leave (2 days)</option>
+                        <option value="compassionate">Compassionate Leave</option>
+                        <option value="study">Study Leave</option>
+                        <option value="examination">Examination Leave</option>
+                        <option value="replacement">Replacement Leave</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="leaveDuration" class="form-label">Duration</label>
+                    <select id="leaveDuration" class="form-select" required>
+                        <option value="">Select Duration</option>
+                        <option value="full">Full Day</option>
+                        <option value="half">Half Day</option>
+                        <option value="multiple">Multiple Days</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="halfDayGroup" style="display: none;">
+                    <label for="halfDayTime" class="form-label">Half Day Time</label>
+                    <select id="halfDayTime" class="form-select">
+                        <option value="morning">Morning</option>
+                        <option value="afternoon">Afternoon</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="singleDateGroup">
+                    <label for="leaveDate" class="form-label">Date</label>
+                    <input type="text" id="leaveDate" class="form-control datepicker" placeholder="Select date" required>
+                </div>
+
+                <div class="form-group" id="dateRangeGroup" style="display: none;">
+                    <label for="leaveStartDate" class="form-label">Start Date</label>
+                    <input type="text" id="leaveStartDate" class="form-control datepicker" placeholder="Select start date">
+
+                    <label for="leaveEndDate" class="form-label" style="margin-top: 10px;">End Date</label>
+                    <input type="text" id="leaveEndDate" class="form-control datepicker" placeholder="Select end date">
+                </div>
+
+                <div class="form-group">
+                    <label for="leaveReason" class="form-label">Reason</label>
+                    <textarea id="leaveReason" class="form-control" rows="3" placeholder="Enter reason for leave" required></textarea>
+                </div>
+
+                <div class="form-group" id="documentUploadGroup">
+                    <label for="leaveDocument" class="form-label">Supporting Document</label>
+                    <input type="file" id="leaveDocument" class="form-control">
+                    <small class="text-muted">Required for all leave types except Annual Leave</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber" class="form-label">Contact Number During Leave</label>
+                    <input type="tel" id="contactNumber" class="form-control" placeholder="Enter contact number" required>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="changePasswordModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Change Password</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="changePasswordForm">
+                <div class="form-group">
+                    <label for="currentPassword" class="form-label">Current Password</label>
+                    <div class="password-container">
+                        <input type="password" id="currentPassword" class="form-control" placeholder="Enter current password" required>
+                        <span class="toggle-password"><i class="far fa-eye"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="newPassword" class="form-label">New Password</label>
+                    <div class="password-container">
+                        <input type="password" id="newPassword" class="form-control" placeholder="Enter new password" required>
+                        <span class="toggle-password"><i class="far fa-eye"></i></span>
+                    </div>
+                    <div class="password-requirements">
+                        <div class="requirement invalid" id="lengthReq">
+                            <i class="far fa-circle"></i> Minimum 8 characters
+                        </div>
+                        <div class="requirement invalid" id="upperReq">
+                            <i class="far fa-circle"></i> At least 1 uppercase letter
+                        </div>
+                        <div class="requirement invalid" id="lowerReq">
+                            <i class="far fa-circle"></i> At least 1 lowercase letter
+                        </div>
+                        <div class="requirement invalid" id="numberReq">
+                            <i class="far fa-circle"></i> At least 1 number
+                        </div>
+                        <div class="requirement invalid" id="specialReq">
+                            <i class="far fa-circle"></i> At least 1 special character
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                    <div class="password-container">
+                        <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm new password" required>
+                        <span class="toggle-password"><i class="far fa-eye"></i></span>
+                    </div>
+                    <small id="passwordMatch" class="text-muted"></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success" id="savePasswordBtn" disabled>Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="rejectLeaveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Reject Leave Request</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="rejectLeaveForm">
+                <input type="hidden" id="rejectLeaveId">
+                <div class="form-group">
+                    <label for="rejectReason" class="form-label">Reason for Rejection</label>
+                    <textarea id="rejectReason" class="form-control" rows="3" placeholder="Enter reason for rejection" required></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit Rejection</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="viewLeaveBalanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Employee Leave Balances</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Leave Type</th>
+                            <th>Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody id="leaveBalanceTableBody">
+                        <!-- Leave balances will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- HR Modals -->
+    <div class="modal" id="addHolidayModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Public Holiday</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="holidayForm">
+                <div class="form-group">
+                    <label for="holidayName" class="form-label">Holiday Name</label>
+                    <input type="text" id="holidayName" class="form-control" placeholder="Enter holiday name" required>
+                </div>
+                <div class="form-group">
+                    <label for="holidayDate" class="form-label">Date</label>
+                    <input type="text" id="holidayDate" class="form-control datepicker" placeholder="Select date" required>
+                </div>
+                <div class="form-group">
+                    <label for="holidayDuration" class="form-label">Duration</label>
+                    <select id="holidayDuration" class="form-select" required>
+                        <option value="full">Full Day</option>
+                        <option value="half">Half Day</option>
+                    </select>
+                </div>
+                <div class="form-group" id="holidayHalfDayGroup" style="display: none;">
+                    <label for="holidayHalfDayTime" class="form-label">Half Day Time</label>
+                    <select id="holidayHalfDayTime" class="form-select">
+                        <option value="morning">Morning</option>
+                        <option value="afternoon">Afternoon</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Holiday</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="addUnrecordedLeaveModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Unrecorded Leave</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="unrecordedLeaveForm">
+                <div class="form-group">
+                    <label for="unrecordedLeaveName" class="form-label">Leave Name</label>
+                    <input type="text" id="unrecordedLeaveName" class="form-control" placeholder="Enter leave name" required>
+                </div>
+                <div class="form-group">
+                    <label for="unrecordedLeaveDate" class="form-label">Date</label>
+                    <input type="text" id="unrecordedLeaveDate" class="form-control datepicker" placeholder="Select date" required>
+                </div>
+                <div class="form-group">
+                    <label for="unrecordedLeaveDuration" class="form-label">Duration</label>
+                    <select id="unrecordedLeaveDuration" class="form-select" required>
+                        <option value="full">Full Day</option>
+                        <option value="half">Half Day</option>
+                    </select>
+                </div>
+                <div class="form-group" id="unrecordedHalfDayGroup" style="display: none;">
+                    <label for="unrecordedHalfDayTime" class="form-label">Half Day Time</label>
+                    <select id="unrecordedHalfDayTime" class="form-select">
+                        <option value="morning">Morning</option>
+                        <option value="afternoon">Afternoon</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="unrecordedLeaveScope" class="form-label">Apply To</label>
+                    <select id="unrecordedLeaveScope" class="form-select" required>
+                        <option value="all">All Employees</option>
+                        <option value="selected">Selected Employees</option>
+                    </select>
+                </div>
+                <div class="form-group" id="selectedEmployeesGroup" style="display: none;">
+                    <label class="form-label">Select Employees</label>
+                    <div class="employee-checkbox-list" id="employeeCheckboxList">
+                        <!-- Employees will be populated dynamically -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Add Leave</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="manageDepartmentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Department</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="departmentForm">
+                <div class="form-group">
+                    <label for="departmentAction" class="form-label">Action</label>
+                    <select id="departmentAction" class="form-select" required>
+                        <option value="">Select Action</option>
+                        <option value="add">Add Department</option>
+                        <option value="delete">Delete Department</option>
+                    </select>
+                </div>
+                <div class="form-group" id="addDepartmentGroup">
+                    <label for="newDepartmentName" class="form-label">Department Name</label>
+                    <input type="text" id="newDepartmentName" class="form-control" placeholder="Enter department name">
+                </div>
+                <div class="form-group" id="deleteDepartmentGroup" style="display: none;">
+                    <label for="departmentToDelete" class="form-label">Select Department</label>
+                    <select id="departmentToDelete" class="form-select">
+                        <!-- Departments will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="manageEmployeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Employee</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="employeeForm">
+                <div class="form-group">
+                    <label for="employeeAction" class="form-label">Action</label>
+                    <select id="employeeAction" class="form-select" required>
+                        <option value="">Select Action</option>
+                        <option value="add">Add Employee</option>
+                        <option value="move">Move Employee</option>
+                        <option value="delete">Delete Employee</option>
+                    </select>
+                </div>
+                <div class="form-group" id="employeeSelectionGroup" style="display: none;">
+                    <label for="selectedEmployee" class="form-label">Select Employee</label>
+                    <select id="selectedEmployee" class="form-select">
+                        <!-- Employees will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group" id="employeeDetailsGroup" style="display: none;">
+                    <div id="addEmployeeGroup">
+                        <label for="employeeName" class="form-label">Full Name</label>
+                        <input type="text" id="employeeName" class="form-control" placeholder="Enter employee name">
+                        
+                        <label for="employeeUsername" class="form-label">Username</label>
+                        <input type="text" id="employeeUsername" class="form-control" placeholder="Enter username">
+                        
+                        <label for="employeeDepartment" class="form-label">Department</label>
+                        <select id="employeeDepartment" class="form-select">
+                            <!-- Departments will be populated dynamically -->
+                        </select>
+                        
+                        <label for="employeeRole" class="form-label">Role</label>
+                        <select id="employeeRole" class="form-select">
+                            <option value="employee">Employee</option>
+                            <option value="supervisor">Supervisor</option>
+                        </select>
+                        
+                        <div id="supervisorDepartmentsGroup" style="display: none;">
+                            <label for="supervisorDepartments" class="form-label">Departments to Manage</label>
+                            <select id="supervisorDepartments" class="form-select" multiple>
+                                <!-- Departments will be populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+                    <div id="moveEmployeeGroup" style="display: none;">
+                        <label for="moveToDepartment" class="form-label">Move to Department</label>
+                        <select id="moveToDepartment" class="form-select">
+                            <!-- Departments will be populated dynamically -->
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="editLeaveBalanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Leave Balance</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="leaveBalanceForm">
+                <input type="hidden" id="balanceEmployeeId">
+                <div class="form-group">
+                    <label for="balanceEmployee" class="form-label">Employee</label>
+                    <select id="balanceEmployee" class="form-select" required>
+                        <!-- Employees will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="balanceLeaveType" class="form-label">Leave Type</label>
+                    <select id="balanceLeaveType" class="form-select" required>
+                        <option value="annual">Annual Leave</option>
+                        <option value="emergency">Emergency Leave</option>
+                        <option value="medical">Medical Leave</option>
+                        <option value="marriage">Marriage Leave</option>
+                        <option value="maternity">Maternity Leave</option>
+                        <option value="paternity">Paternity Leave</option>
+                        <option value="compassionate">Compassionate Leave</option>
+                        <option value="study">Study Leave</option>
+                        <option value="examination">Examination Leave</option>
+                        <option value="replacement">Replacement Leave</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="balanceDays" class="form-label">Days</label>
+                    <input type="number" id="balanceDays" class="form-control" min="0" step="0.5" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger close-modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Update Balance</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal" id="viewEmployeeModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Employee Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="employeeDetailsContent">
+                <!-- Employee details will be populated here -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        // Sample Data Storage
+        const defaultLeaveBalances = {
+            annual: 14,
+            emergency: 7,
+            unpaid: 7,
+            medical: 14,
+            marriage: 3,
+            maternity: 60,
+            paternity: 2,
+            compassionate: 7,
+            study: 3,
+            examination: 365,
+            replacement: 0
+        };
+
+        const departments = [
+            { id: 1, name: "Mr IAN" },
+            { id: 2, name: "TAY BOON RONG" },
+            { id: 3, name: "MARK ANTHONY" },
+            { id: 4, name: "AHMED FAROUK" },
+            { id: 5, name: "CHONG JIA LING" },
+            { id: 6, name: "LOH FOENG MEI" },
+            { id: 7, name: "MAGESON" },
+            { id: 8, name: "LIM CHIN YEE" },
+            { id: 9, name: "HUANG SWEE LIN" },
+            { id: 10, name: "CHEAH GOON SENG" },
+            { id: 11, name: "PUA HOOI TENG" },
+            { id: 12, name: "SHAHIEDATUL ZHAFIRAH" },
+            { id: 13, name: "PRISCILLA" },
+            { id: 14, name: "MR . RONNIE" }
+        ];
+
+        let users = [
+            { 
+                id: 1, 
+                username: "mags", 
+                password: "password123", 
+                name: "MANGALAGOWRI", 
+                role: "hr", 
+                department: "MARK ANTHONY", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "mags@archipelagogrp.com"
+            },
+            // Mr IAN's department
+            { 
+                id: 2, 
+                username: "ian.lim", 
+                password: "password123", 
+                name: "Mr IAN", 
+                role: "supervisor", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["TAY BOON RONG", "MARK ANTHONY", "AHMED FAROUK", "KROSE ANAK RAWONG", "SIMON HARDI", "PUA HOOI TENG"],
+                email: "ian.lim@archipelagogrp.com"
+            },
+            { 
+                id: 3, 
+                username: "adrian.tay", 
+                password: "password123", 
+                name: "TAY BOON RONG", 
+                role: "supervisor", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["CHONG JIA LING"],
+                email: "adrian.tay@archipelagogrp.com"
+            },
+            { 
+                id: 4, 
+                username: "mark", 
+                password: "password123", 
+                name: "MARK ANTHONY", 
+                role: "supervisor", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["LOH FOENG MEI", "SURIN", "MANGALAGOWRI"],
+                email: "mark@archipelagogrp.com"
+            },
+            { 
+                id: 5, 
+                username: "farouk.aripen", 
+                password: "password123", 
+                name: "AHMED FAROUK", 
+                role: "supervisor", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["MAGESON", "SARALA", "LIM CHIN YEE", "HUANG SWEE LIN", "CHEAH GOON SENG"],
+                email: "farouk.aripen@archipelagogrp.com"
+            },
+            { 
+                id: 6, 
+                username: "adeline.chong", 
+                password: "password123", 
+                name: "CHONG JIA LING", 
+                role: "supervisor", 
+                department: "TAY BOON RONG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["PRATHEBA", "SHAHRUL NIZAM"],
+                email: "adeline.chong@archipelagogrp.com"
+            },
+            { 
+                id: 7, 
+                username: "jaymee.loh", 
+                password: "password123", 
+                name: "LOH FOENG MEI", 
+                role: "supervisor", 
+                department: "MARK ANTHONY", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["NOOR AMANINA"],
+                email: "jaymee.loh@archipelagogrp.com"
+            },
+            { 
+                id: 8, 
+                username: "mike", 
+                password: "password123", 
+                name: "MAGESON", 
+                role: "supervisor", 
+                department: "AHMED FAROUK", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["PREMA", "NG JOOK YEW", "NUR ALIA ZAHARAH", "FAUZATUL ASRAR"],
+                email: "mike@archipelagogrp.com"
+            },
+            { 
+                id: 9, 
+                username: "lim.chinyee", 
+                password: "password123", 
+                name: "LIM CHIN YEE", 
+                role: "supervisor", 
+                department: "AHMED FAROUK", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["NURUL FADHILAH", "NUR FATIN NADIA", "FARA SHUHADA", "NORSYAFINAZ"],
+                email: "lim.chinyee@archipelagogrp.com"
+            },
+            { 
+                id: 10, 
+                username: "janehuang", 
+                password: "password123", 
+                name: "HUANG SWEE LIN", 
+                role: "supervisor", 
+                department: "AHMED FAROUK", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["NG YEE LING", "MOHD AKHTAR", "THIRUCHELVI", "DIANNDRE EREKA", "KEE LI KAI"],
+                email: "janehuang@archipelagogrp.com"
+            },
+            { 
+                id: 11, 
+                username: "lance.cheah", 
+                password: "password123", 
+                name: "CHEAH GOON SENG", 
+                role: "supervisor", 
+                department: "AHMED FAROUK", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["ASZELWIN ELSIE", "REBECCA DIANA", "JANE JULISAN", "JENNIFER LLOREN"],
+                email: "lance.cheah@archipelagogrp.com"
+            },
+            { 
+                id: 12, 
+                username: "hiromi.pua", 
+                password: "password123", 
+                name: "PUA HOOI TENG", 
+                role: "supervisor", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["SHAHIEDATUL ZHAFIRAH", "CHONG YEAN LEE", "PRISCILLA"],
+                email: "hiromi.pua@archipelagogrp.com"
+            },
+            { 
+                id: 13, 
+                username: "zhafirah", 
+                password: "password123", 
+                name: "SHAHIEDATUL ZHAFIRAH", 
+                role: "supervisor", 
+                department: "PUA HOOI TENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["MOHAMMAD REEZAL", "NEOH MEI FANG", "BALQIS", "LOO KAR YONG", "JAYMEE CHYE"],
+                email: "zhafirah@archipelagogrp.com"
+            },
+            { 
+                id: 14, 
+                username: "priscilla", 
+                password: "password123", 
+                name: "PRISCILLA", 
+                role: "supervisor", 
+                department: "PUA HOOI TENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["NURIN AQILAH", "HAIKAL IRFAN", "SITI HAJAR"],
+                email: "priscilla@archipelagogrp.com"
+            },
+            { 
+                id: 15, 
+                username: "ronnie", 
+                password: "password123", 
+                name: "MR . RONNIE", 
+                role: "supervisor", 
+                department: "MR . RONNIE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                manages: ["SONIA"],
+                email: "ronnie@acurraltd.com"
+            },
+            // Employees
+            { 
+                id: 16, 
+                username: "krose", 
+                password: "password123", 
+                name: "KROSE ANAK RAWONG", 
+                role: "employee", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: ""
+            },
+            { 
+                id: 17, 
+                username: "simon", 
+                password: "password123", 
+                name: "SIMON HARDI", 
+                role: "employee", 
+                department: "Mr IAN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: ""
+            },
+            { 
+                id: 18, 
+                username: "surin", 
+                password: "password123", 
+                name: "SURIN", 
+                role: "employee", 
+                department: "MARK ANTHONY", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "surin@archipelagogrp.com"
+            },
+            { 
+                id: 19, 
+                username: "sarala", 
+                password: "password123", 
+                name: "SARALA", 
+                role: "employee", 
+                department: "AHMED FAROUK", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "sarala@archipelagogrp.com"
+            },
+            { 
+                id: 20, 
+                username: "prathebha", 
+                password: "password123", 
+                name: "PRATHEBA", 
+                role: "employee", 
+                department: "CHONG JIA LING", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "prathebha@archipelagogrp.com"
+            },
+            { 
+                id: 21, 
+                username: "shahrul", 
+                password: "password123", 
+                name: "SHAHRUL NIZAM", 
+                role: "employee", 
+                department: "CHONG JIA LING", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "shahrul@archipelagogrp.com"
+            },
+            { 
+                id: 22, 
+                username: "amanina", 
+                password: "password123", 
+                name: "NOOR AMANINA", 
+                role: "employee", 
+                department: "LOH FOENG MEI", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "amanina@archipelagogrp.com"
+            },
+            { 
+                id: 23, 
+                username: "prema", 
+                password: "password123", 
+                name: "PREMA", 
+                role: "employee", 
+                department: "MAGESON", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "prema@archipelagogrp.com"
+            },
+            { 
+                id: 24, 
+                username: "nicholas.ng", 
+                password: "password123", 
+                name: "NG JOOK YEW", 
+                role: "employee", 
+                department: "MAGESON", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "nicholas.ng@archipelagogrp.com"
+            },
+            { 
+                id: 25, 
+                username: "nuraliazaharah", 
+                password: "password123", 
+                name: "NUR ALIA ZAHARAH", 
+                role: "employee", 
+                department: "MAGESON", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "nuraliazaharah@archipelagogrp.com"
+            },
+            { 
+                id: 26, 
+                username: "fauzatul", 
+                password: "password123", 
+                name: "FAUZATUL ASRAR", 
+                role: "employee", 
+                department: "MAGESON", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "fauzatul@archipelagogrp.com"
+            },
+            { 
+                id: 27, 
+                username: "fadhilah", 
+                password: "password123", 
+                name: "NURUL FADHILAH", 
+                role: "employee", 
+                department: "LIM CHIN YEE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "fadhilah@archipelagogrp.com"
+            },
+            { 
+                id: 28, 
+                username: "fatin.nadia", 
+                password: "password123", 
+                name: "NUR FATIN NADIA", 
+                role: "employee", 
+                department: "LIM CHIN YEE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "fatin.nadia@archipelagogrp.com"
+            },
+            { 
+                id: 29, 
+                username: "fara", 
+                password: "password123", 
+                name: "FARA SHUHADA", 
+                role: "employee", 
+                department: "LIM CHIN YEE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "fara@archipelagogrp.com"
+            },
+            { 
+                id: 30, 
+                username: "norsyafinaz", 
+                password: "password123", 
+                name: "NORSYAFINAZ", 
+                role: "employee", 
+                department: "LIM CHIN YEE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "norsyafinaz@archipelagogrp.com"
+            },
+            { 
+                id: 31, 
+                username: "yeeling.ng", 
+                password: "password123", 
+                name: "NG YEE LING", 
+                role: "employee", 
+                department: "HUANG SWEE LIN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "yeeling.ng@archipelagogrp.com"
+            },
+            { 
+                id: 32, 
+                username: "akhtar", 
+                password: "password123", 
+                name: "MOHD AKHTAR", 
+                role: "employee", 
+                department: "HUANG SWEE LIN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "akhtar@archipelagogrp.com"
+            },
+            { 
+                id: 33, 
+                username: "selvi", 
+                password: "password123", 
+                name: "THIRUCHELVI", 
+                role: "employee", 
+                department: "HUANG SWEE LIN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "selvi@archipelagogrp.com"
+            },
+            { 
+                id: 34, 
+                username: "dianndre", 
+                password: "password123", 
+                name: "DIANNDRE EREKA", 
+                role: "employee", 
+                department: "HUANG SWEE LIN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "dianndre@archipelagogrp.com"
+            },
+            { 
+                id: 35, 
+                username: "keelikai", 
+                password: "password123", 
+                name: "KEE LI KAI", 
+                role: "employee", 
+                department: "HUANG SWEE LIN", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "keelikai@archipelagogrp.com"
+            },
+            { 
+                id: 36, 
+                username: "elsie", 
+                password: "password123", 
+                name: "ASZELWIN ELSIE", 
+                role: "employee", 
+                department: "CHEAH GOON SENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "elsie@archipelagogrp.com"
+            },
+            { 
+                id: 37, 
+                username: "rebecca", 
+                password: "password123", 
+                name: "REBECCA DIANA", 
+                role: "employee", 
+                department: "CHEAH GOON SENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "rebecca@archipelagogrp.com"
+            },
+            { 
+                id: 38, 
+                username: "jane", 
+                password: "password123", 
+                name: "JANE JULISAN", 
+                role: "employee", 
+                department: "CHEAH GOON SENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "jane@archipelagogrp.com"
+            },
+            { 
+                id: 39, 
+                username: "jennifer", 
+                password: "password123", 
+                name: "JENNIFER LLOREN", 
+                role: "employee", 
+                department: "CHEAH GOON SENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "jennifer@archipelagogrp.com"
+            },
+            { 
+                id: 40, 
+                username: "yean", 
+                password: "password123", 
+                name: "CHONG YEAN LEE", 
+                role: "employee", 
+                department: "PUA HOOI TENG", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "yean@lexasure.com"
+            },
+            { 
+                id: 41, 
+                username: "reezal", 
+                password: "password123", 
+                name: "MOHAMMAD REEZAL", 
+                role: "employee", 
+                department: "SHAHIEDATUL ZHAFIRAH", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "reezal@archipelagogrp.com"
+            },
+            { 
+                id: 42, 
+                username: "may.neoh", 
+                password: "password123", 
+                name: "NEOH MEI FANG", 
+                role: "employee", 
+                department: "SHAHIEDATUL ZHAFIRAH", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "may.neoh@archipelagogrp.com"
+            },
+            { 
+                id: 43, 
+                username: "balqis", 
+                password: "password123", 
+                name: "BALQIS", 
+                role: "employee", 
+                department: "SHAHIEDATUL ZHAFIRAH", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "balqis@archipelagogrp.com"
+            },
+            { 
+                id: 44, 
+                username: "karyong", 
+                password: "password123", 
+                name: "LOO KAR YONG", 
+                role: "employee", 
+                department: "SHAHIEDATUL ZHAFIRAH", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "karyong@archipelagogrp.com"
+            },
+            { 
+                id: 45, 
+                username: "jaymee.chye", 
+                password: "password123", 
+                name: "JAYMEE CHYE", 
+                role: "employee", 
+                department: "SHAHIEDATUL ZHAFIRAH", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "jaymee.chye@archipelagogrp.com"
+            },
+            { 
+                id: 46, 
+                username: "nurinaqilah", 
+                password: "password123", 
+                name: "NURIN AQILAH", 
+                role: "employee", 
+                department: "PRISCILLA", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "nurinaqilah@archipelagogrp.com"
+            },
+            { 
+                id: 47, 
+                username: "haikal.irfan", 
+                password: "password123", 
+                name: "HAIKAL IRFAN", 
+                role: "employee", 
+                department: "PRISCILLA", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "haikal.irfan@archipelagogrp.com"
+            },
+            { 
+                id: 48, 
+                username: "sitihajar", 
+                password: "password123", 
+                name: "SITI HAJAR", 
+                role: "employee", 
+                department: "PRISCILLA", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "sitihajar@archipelagogrp.com"
+            },
+            { 
+                id: 49, 
+                username: "sonia", 
+                password: "password123", 
+                name: "SONIA", 
+                role: "employee", 
+                department: "MR . RONNIE", 
+                leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                email: "sonia@acurraltd.com"
+            }
+        ];
+
+        const publicHolidays = [];
+        const leaveRequests = [];
+        const unrecordedLeaves = [];
+
+        // Initialize date pickers
+        flatpickr(".datepicker", {
+            dateFormat: "d M Y",
+            disable: [
+                function(date) {
+                    // Disable weekends
+                    return (date.getDay() === 0 || date.getDay() === 6);
+                }
+            ]
+        });
+
+        // DOM Elements
+        const loginPage = document.getElementById('loginPage');
+        const dashboardPage = document.getElementById('dashboardPage');
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+        const userAvatar = document.getElementById('userAvatar');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const mainContent = document.getElementById('mainContent');
+        const logoutBtn = document.querySelector('.logout-btn');
+        const infoIcon = document.getElementById('infoIcon');
+        const infoTooltip = document.getElementById('infoTooltip');
+        const notificationBell = document.getElementById('notificationBell');
+        const notificationBadge = document.getElementById('notificationBadge');
+
+        // Current User
+        let currentUser = null;
+
+        // Login Functionality
+        loginForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value;
+
+            // Find user
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                loginPage.style.display = 'none';
+                dashboardPage.style.display = 'block';
+                welcomeMessage.textContent = `Welcome, ${user.name} (${user.role === 'hr' ? 'HR' : user.role.charAt(0).toUpperCase() + user.role.slice(1)})`;
+                userAvatar.src = '';
+                loadDashboard();
+                updateNotificationBadge();
+            } else {
+                alert('Invalid username or password');
+            }
+        });
+
+        // Logout Functionality
+        logoutBtn.addEventListener('click', function() {
+            currentUser = null;
+            dashboardPage.style.display = 'none';
+            loginPage.style.display = 'flex';
+            usernameInput.value = '';
+            passwordInput.value = '';
+        });
+
+        // Info icon hover
+        infoIcon.addEventListener('mouseenter', function() {
+            infoTooltip.style.display = 'block';
+        });
+
+        infoIcon.addEventListener('mouseleave', function() {
+            infoTooltip.style.display = 'none';
+        });
+
+        // Update notification badge
+        function updateNotificationBadge() {
+            if (currentUser && (currentUser.role === 'supervisor' || currentUser.role === 'hr')) {
+                const pendingRequests = leaveRequests.filter(req => 
+                    req.status === 'pending' && 
+                    (currentUser.role === 'hr' || req.approver === currentUser.name)
+                );
+                
+                if (pendingRequests.length > 0) {
+                    notificationBell.style.display = 'block';
+                    notificationBadge.textContent = pendingRequests.length;
+                } else {
+                    notificationBell.style.display = 'none';
+                }
+            } else {
+                notificationBell.style.display = 'none';
+            }
+        }
+
+        // Load Dashboard based on user role
+        function loadDashboard() {
+            // Clear previous content
+            sidebarMenu.innerHTML = '';
+            mainContent.innerHTML = '';
+
+            // Common menu items
+            const commonMenuItems = [
+                { icon: 'fa-tachometer-alt', text: 'Dashboard', action: 'loadDashboardView' },
+                { icon: 'fa-calendar-plus', text: 'Apply Leave', action: 'loadApplyLeaveView' },
+                { icon: 'fa-history', text: 'Leave Requests', action: 'loadLeaveRequestsView' },
+                { icon: 'fa-user-cog', text: 'Profile', action: 'loadProfileView' },
+                { icon: 'fa-key', text: 'Change Password', action: 'showChangePasswordModal' }
+            ];
+
+            // Role-specific menu items
+            let roleSpecificItems = [];
+            if (currentUser.role === 'supervisor') {
+                roleSpecificItems = [
+                    { icon: 'fa-users', text: 'My Employees', action: 'loadMyEmployeesView' },
+                    { icon: 'fa-calendar-day', text: 'Public Holidays', action: 'loadPublicHolidaysView' },
+                    { icon: 'fa-calendar-minus', text: 'Unrecorded Leaves', action: 'loadUnrecordedLeavesView' }
+                ];
+            } else if (currentUser.role === 'hr') {
+                roleSpecificItems = [
+                    { icon: 'fa-users', text: 'Employee Management', action: 'loadEmployeeManagementView' },
+                    { icon: 'fa-building', text: 'Department Management', action: 'loadDepartmentManagementView' },
+                    { icon: 'fa-calendar-day', text: 'Public Holidays', action: 'loadPublicHolidaysView' },
+                    { icon: 'fa-calendar-minus', text: 'Unrecorded Leaves', action: 'loadUnrecordedLeavesView' }
+                ];
+            } else if (currentUser.role === 'employee') {
+                roleSpecificItems = [
+                    { icon: 'fa-calendar-day', text: 'Public Holidays', action: 'loadPublicHolidaysView' },
+                    { icon: 'fa-calendar-minus', text: 'Unrecorded Leaves', action: 'loadUnrecordedLeavesView' }
+                ];
+            }
+
+            // Create menu items
+            [...commonMenuItems, ...roleSpecificItems].forEach(item => {
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = '#';
+                a.innerHTML = `<i class="fas ${item.icon}"></i> ${item.text}`;
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window[item.action]();
+                });
+                li.appendChild(a);
+                sidebarMenu.appendChild(li);
+            });
+
+            // Load default view
+            loadDashboardView();
+        }
+
+        // View Loaders
+        function loadDashboardView() {
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>${currentUser.role === 'hr' ? 'HR' : currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)} Dashboard</h1>
+                    ${currentUser.role !== 'employee' ? '<button class="btn btn-primary" id="applyLeaveBtn"><i class="fas fa-plus"></i> Apply Leave</button>' : ''}
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Leave Balances</h2>
+                    </div>
+                    <button class="leave-balance-toggle" id="toggleLeaveBalance">Show Leave Balance</button>
+                    <div class="table-responsive leave-balance-table" id="leaveBalanceTable">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Annual Leave</td>
+                                    <td>${currentUser.leaveBalances.annual} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Emergency Leave</td>
+                                    <td>${currentUser.leaveBalances.emergency} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Unpaid Leave</td>
+                                    <td>${currentUser.leaveBalances.unpaid} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Medical Leave</td>
+                                    <td>${currentUser.leaveBalances.medical} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Marriage Leave</td>
+                                    <td>${currentUser.leaveBalances.marriage} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Maternity Leave</td>
+                                    <td>${currentUser.leaveBalances.maternity} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Paternity Leave</td>
+                                    <td>${currentUser.leaveBalances.paternity} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Compassionate Leave</td>
+                                    <td>${currentUser.leaveBalances.compassionate} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Study Leave</td>
+                                    <td>${currentUser.leaveBalances.study} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Examination Leave</td>
+                                    <td>${currentUser.leaveBalances.examination} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Replacement Leave</td>
+                                    <td>${currentUser.leaveBalances.replacement} days</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            // Toggle leave balance table
+            document.getElementById('toggleLeaveBalance').addEventListener('click', function() {
+                const table = document.getElementById('leaveBalanceTable');
+                const isVisible = table.style.display === 'block';
+                table.style.display = isVisible ? 'none' : 'block';
+                this.textContent = isVisible ? 'Show Leave Balance' : 'Hide Leave Balance';
+            });
+
+            if (currentUser.role === 'supervisor') {
+                // Show employees for supervisor
+                mainContent.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">My Employees</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Department</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${users.filter(u => currentUser.manages.includes(u.name)).map(user => `
+                                        <tr>
+                                            <td>${user.name}</td>
+                                            <td>${user.department}</td>
+                                            <td>
+                                                <button class="btn btn-sm btn-primary" onclick="viewEmployeeDetails(${user.id})"><i class="fas fa-eye"></i> View</button>
+                                                <button class="btn btn-sm btn-info" onclick="viewLeaveBalance(${user.id})"><i class="fas fa-calendar"></i> Leave Balance</button>
+                                            </td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+            } else if (currentUser.role === 'hr') {
+                // HR dashboard
+                mainContent.innerHTML += `
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">System Overview</h2>
+                        </div>
+                        <div class="leave-balance-card">
+                            <div class="balance-item">
+                                <h3>Total Employees</h3>
+                                <p>${users.length}</p>
+                            </div>
+                            <div class="balance-item">
+                                <h3>Departments</h3>
+                                <p>${departments.length}</p>
+                            </div>
+                            <div class="balance-item">
+                                <h3>Public Holidays</h3>
+                                <p>${publicHolidays.length}</p>
+                            </div>
+                            <div class="balance-item">
+                                <h3>Pending Requests</h3>
+                                <p>${leaveRequests.filter(req => req.status === 'pending').length}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quick Actions</h2>
+                        </div>
+                        <div style="display: flex; gap: 10px; padding: 15px;">
+                            <button class="btn btn-primary" onclick="showAddHolidayModal()"><i class="fas fa-calendar-plus"></i> Add Holiday</button>
+                            <button class="btn btn-success" onclick="showAddUnrecordedLeaveModal()"><i class="fas fa-calendar-minus"></i> Add Unrecorded Leave</button>
+                            <button class="btn btn-info" onclick="showManageDepartmentModal()"><i class="fas fa-building"></i> Manage Department</button>
+                            <button class="btn btn-warning" onclick="showManageEmployeeModal()"><i class="fas fa-users"></i> Manage Employee</button>
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Add event listener for apply leave button if it exists
+            const applyLeaveBtn = document.getElementById('applyLeaveBtn');
+            if (applyLeaveBtn) {
+                applyLeaveBtn.addEventListener('click', function() {
+                    showApplyLeaveModal();
+                });
+            }
+        }
+
+        function loadApplyLeaveView() {
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Apply for Leave</h1>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">New Leave Application</h2>
+                    </div>
+                    <form id="leaveFormPage">
+                        <div class="form-group">
+                            <label for="leaveTypePage" class="form-label">Leave Type</label>
+                            <select id="leaveTypePage" class="form-select" required>
+                                <option value="">Select Leave Type</option>
+                                <option value="annual">Annual Leave</option>
+                                <option value="emergency">Emergency Leave</option>
+                                <option value="unpaid">Unpaid Leave</option>
+                                <option value="medical">Medical Leave</option>
+                                <option value="marriage">Marriage Leave</option>
+                                <option value="maternity">Maternity Leave (60 days)</option>
+                                <option value="paternity">Paternity Leave (2 days)</option>
+                                <option value="compassionate">Compassionate Leave</option>
+                                <option value="study">Study Leave</option>
+                                <option value="examination">Examination Leave</option>
+                                <option value="replacement">Replacement Leave</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leaveDurationPage" class="form-label">Duration</label>
+                            <select id="leaveDurationPage" class="form-select" required>
+                                <option value="">Select Duration</option>
+                                <option value="full">Full Day</option>
+                                <option value="half">Half Day</option>
+                                <option value="multiple">Multiple Days</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="halfDayGroupPage" style="display: none;">
+                            <label for="halfDayTimePage" class="form-label">Half Day Time</label>
+                            <select id="halfDayTimePage" class="form-select">
+                                <option value="morning">Morning</option>
+                                <option value="afternoon">Afternoon</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group" id="singleDateGroupPage">
+                            <label for="leaveDatePage" class="form-label">Date</label>
+                            <input type="text" id="leaveDatePage" class="form-control datepicker" placeholder="Select date" required>
+                        </div>
+
+                        <div class="form-group" id="dateRangeGroupPage" style="display: none;">
+                            <label for="leaveStartDatePage" class="form-label">Start Date</label>
+                            <input type="text" id="leaveStartDatePage" class="form-control datepicker" placeholder="Select start date">
+
+                            <label for="leaveEndDatePage" class="form-label" style="margin-top: 10px;">End Date</label>
+                            <input type="text" id="leaveEndDatePage" class="form-control datepicker" placeholder="Select end date">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leaveReasonPage" class="form-label">Reason</label>
+                            <textarea id="leaveReasonPage" class="form-control" rows="3" placeholder="Enter reason for leave" required></textarea>
+                        </div>
+
+                        <div class="form-group" id="documentUploadGroupPage">
+                            <label for="leaveDocumentPage" class="form-label">Supporting Document</label>
+                            <input type="file" id="leaveDocumentPage" class="form-control">
+                            <small class="text-muted">Required for all leave types except Annual Leave</small>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="contactNumberPage" class="form-label">Contact Number During Leave</label>
+                            <input type="tel" id="contactNumberPage" class="form-control" placeholder="Enter contact number" required>
+                        </div>
+
+                        <div style="text-align: right; margin-top: 20px;">
+                            <button type="submit" class="btn btn-success">Submit Application</button>
+                        </div>
+                    </form>
+                </div>
+            `;
+
+            // Get disabled dates (weekends, public holidays, and unrecorded leaves)
+            const disabledDates = [];
+            
+            // Add weekends
+            disabledDates.push(function(date) {
+                return (date.getDay() === 0 || date.getDay() === 6);
+            });
+            
+            // Add public holidays
+            publicHolidays.forEach(holiday => {
+                const holidayDate = new Date(holiday.date);
+                disabledDates.push(holidayDate.toISOString().split('T')[0]);
+            });
+            
+            // Add unrecorded leaves
+            unrecordedLeaves.forEach(leave => {
+                if (leave.scope === 'all' || (leave.scope === 'selected' && leave.employees.includes(currentUser.id))) {
+                    const leaveDate = new Date(leave.date);
+                    disabledDates.push(leaveDate.toISOString().split('T')[0]);
+                }
+            });
+
+            // Initialize date pickers
+            flatpickr("#leaveDatePage", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+
+            flatpickr("#leaveStartDatePage", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+
+            flatpickr("#leaveEndDatePage", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+
+            // Toggle between single date and date range
+            document.getElementById('leaveDurationPage').addEventListener('change', function() {
+                const duration = this.value;
+                const singleDateGroup = document.getElementById('singleDateGroupPage');
+                const dateRangeGroup = document.getElementById('dateRangeGroupPage');
+                const halfDayGroup = document.getElementById('halfDayGroupPage');
+
+                if (duration === 'multiple') {
+                    singleDateGroup.style.display = 'none';
+                    dateRangeGroup.style.display = 'block';
+                    halfDayGroup.style.display = 'none';
+                } else if (duration === 'half') {
+                    singleDateGroup.style.display = 'block';
+                    dateRangeGroup.style.display = 'none';
+                    halfDayGroup.style.display = 'block';
+                } else {
+                    singleDateGroup.style.display = 'block';
+                    dateRangeGroup.style.display = 'none';
+                    halfDayGroup.style.display = 'none';
+                }
+            });
+
+            // Toggle document upload requirement based on leave type
+            document.getElementById('leaveTypePage').addEventListener('change', function() {
+                const leaveType = this.value;
+                const documentUploadGroup = document.getElementById('documentUploadGroupPage');
+
+                if (leaveType === 'annual') {
+                    documentUploadGroup.style.display = 'none';
+                } else {
+                    documentUploadGroup.style.display = 'block';
+                }
+            });
+
+            // Form submission
+            document.getElementById('leaveFormPage').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const leaveType = document.getElementById('leaveTypePage').value;
+                const duration = document.getElementById('leaveDurationPage').value;
+                const halfDayTime = duration === 'half' ? document.getElementById('halfDayTimePage').value : null;
+                const startDate = duration === 'multiple' ? document.getElementById('leaveStartDatePage').value : document.getElementById('leaveDatePage').value;
+                const endDate = duration === 'multiple' ? document.getElementById('leaveEndDatePage').value : document.getElementById('leaveDatePage').value;
+                const reason = document.getElementById('leaveReasonPage').value;
+                const document = document.getElementById('leaveDocumentPage').files[0] ? document.getElementById('leaveDocumentPage').files[0].name : null;
+                const contactNumber = document.getElementById('contactNumberPage').value;
+                
+                // Calculate duration in days excluding weekends and holidays
+                let days = 0;
+                if (duration === 'multiple') {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    
+                    // Loop through each day in the range
+                    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+                        // Skip weekends
+                        if (date.getDay() === 0 || date.getDay() === 6) continue;
+                        
+                        // Skip public holidays
+                        const isHoliday = publicHolidays.some(holiday => {
+                            const holidayDate = new Date(holiday.date);
+                            return holidayDate.toDateString() === date.toDateString();
+                        });
+                        if (isHoliday) continue;
+                        
+                        // Skip unrecorded leaves
+                        const isUnrecordedLeave = unrecordedLeaves.some(leave => {
+                            const leaveDate = new Date(leave.date);
+                            return leaveDate.toDateString() === date.toDateString() && 
+                                  (leave.scope === 'all' || (leave.scope === 'selected' && leave.employees.includes(currentUser.id)));
+                        });
+                        if (isUnrecordedLeave) continue;
+                        
+                        days += 1;
+                    }
+                } else if (duration === 'half') {
+                    days = 0.5;
+                } else {
+                    days = 1;
+                }
+                
+                // Find the supervisor who manages this employee
+                let approver = null;
+                if (currentUser.role === 'employee') {
+                    approver = users.find(u => u.manages && u.manages.includes(currentUser.name));
+                }
+                
+                // Create leave request
+                const newRequest = {
+                    id: leaveRequests.length + 1,
+                    employee: currentUser.name,
+                    type: leaveType,
+                    startDate: startDate,
+                    endDate: endDate,
+                    duration: days,
+                    halfDayTime: halfDayTime,
+                    reason: reason,
+                    document: document,
+                    contactNumber: contactNumber,
+                    status: 'pending',
+                    approver: approver ? approver.name : null,
+                    department: currentUser.department,
+                    dateApplied: new Date().toISOString().split('T')[0],
+                    employeeId: currentUser.id
+                };
+                
+                leaveRequests.push(newRequest);
+                
+                // Send email notification
+                sendLeaveApplicationEmail(newRequest);
+                
+                alert('Leave application submitted successfully!');
+                loadDashboardView();
+                updateNotificationBadge();
+            });
+        }
+
+        function loadLeaveRequestsView() {
+            let userLeaves = [];
+            
+            if (currentUser.role === 'employee') {
+                // Employee sees their own requests
+                userLeaves = leaveRequests.filter(req => req.employee === currentUser.name);
+            } else if (currentUser.role === 'supervisor') {
+                // Supervisor sees requests from their employees and their own requests
+                userLeaves = leaveRequests.filter(req => 
+                    (req.approver === currentUser.name || req.employee === currentUser.name)
+                );
+            } else if (currentUser.role === 'hr') {
+                // HR sees all requests
+                userLeaves = [...leaveRequests];
+            }
+            
+            // Separate pending and processed requests
+            const pendingRequests = userLeaves.filter(req => req.status === 'pending' && req.employee !== currentUser.name);
+            const processedRequests = userLeaves.filter(req => req.status !== 'pending' || req.employee === currentUser.name);
+
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Leave Requests</h1>
+                </div>
+                
+                <div class="tabs">
+                    <div class="tab active" data-tab="pending">Pending Requests</div>
+                    <div class="tab" data-tab="processed">Processed Requests</div>
+                </div>
+                
+                <div class="tab-content active" id="pendingTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Pending Leave Requests</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Employee</th>
+                                        <th>Leave Type</th>
+                                        <th>Dates</th>
+                                        <th>Duration</th>
+                                        <th>Reason</th>
+                                        <th>Document</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${pendingRequests.length > 0 ? 
+                                        pendingRequests.map(req => `
+                                            <tr>
+                                                <td>${req.employee}</td>
+                                                <td>${req.type.charAt(0).toUpperCase() + req.type.slice(1)} Leave</td>
+                                                <td>${formatDate(req.startDate)} ${req.duration === 0.5 ? `(${req.halfDayTime})` : req.startDate !== req.endDate ? `- ${formatDate(req.endDate)}` : ''}</td>
+                                                <td>${req.duration} ${req.duration === 1 ? 'day' : 'days'}</td>
+                                                <td>${req.reason}</td>
+                                                <td>${req.document ? `<a href="#" class="btn btn-sm btn-info"><i class="fas fa-file-alt"></i> View</a>` : 'None'}</td>
+                                                <td>
+                                                    ${req.employee !== currentUser.name ? `
+                                                    <button class="btn btn-sm btn-success" onclick="approveLeave(${req.id})"><i class="fas fa-check"></i> Approve</button>
+                                                    <button class="btn btn-sm btn-danger" onclick="showRejectLeaveModal(${req.id})"><i class="fas fa-times"></i> Reject</button>
+                                                    ` : `
+                                                    <button class="btn btn-sm btn-danger" onclick="cancelLeave(${req.id})"><i class="fas fa-times"></i> Cancel</button>
+                                                    `}
+                                                </td>
+                                            </tr>
+                                        `).join('') : `
+                                        <tr>
+                                            <td colspan="7" style="text-align: center;">No pending leave requests</td>
+                                        </tr>
+                                        `}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="processedTab">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Processed Leave Requests</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>${currentUser.role !== 'employee' ? 'Employee' : ''}</th>
+                                        <th>Leave Type</th>
+                                        <th>Dates</th>
+                                        <th>Duration</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${processedRequests.length > 0 ? 
+                                        processedRequests.map(req => `
+                                            <tr>
+                                                <td>${currentUser.role !== 'employee' ? req.employee : ''}</td>
+                                                <td>${req.type.charAt(0).toUpperCase() + req.type.slice(1)} Leave</td>
+                                                <td>${formatDate(req.startDate)} ${req.duration === 0.5 ? `(${req.halfDayTime})` : req.startDate !== req.endDate ? `- ${formatDate(req.endDate)}` : ''}</td>
+                                                <td>${req.duration} ${req.duration === 1 ? 'day' : 'days'}</td>
+                                                <td>${req.reason}</td>
+                                                <td><span class="badge ${getStatusBadgeClass(req.status)}">${req.status.charAt(0).toUpperCase() + req.status.slice(1)}</span></td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-info"><i class="fas fa-eye"></i> View</button>
+                                                </td>
+                                            </tr>
+                                        `).join('') : `
+                                        <tr>
+                                            <td colspan="7" style="text-align: center;">No processed leave requests</td>
+                                        </tr>
+                                        `}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Add tab switching functionality
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    this.classList.add('active');
+                    document.getElementById(`${this.dataset.tab}Tab`).classList.add('active');
+                });
+            });
+        }
+
+        function loadMyEmployeesView() {
+            if (currentUser.role !== 'supervisor') return;
+
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>My Employees</h1>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Employee List</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Employee</th>
+                                    <th>Department</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${users.filter(u => currentUser.manages.includes(u.name)).map(user => `
+                                    <tr>
+                                        <td>${user.name}</td>
+                                        <td>${user.department}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-primary" onclick="viewEmployeeDetails(${user.id})"><i class="fas fa-eye"></i> View</button>
+                                            <button class="btn btn-sm btn-info" onclick="viewLeaveBalance(${user.id})"><i class="fas fa-calendar"></i> Leave Balance</button>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadPublicHolidaysView() {
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Public Holidays</h1>
+                    ${currentUser.role === 'hr' ? '<button class="btn btn-primary" onclick="showAddHolidayModal()"><i class="fas fa-plus"></i> Add Holiday</button>' : ''}
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Upcoming Holidays</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Duration</th>
+                                    ${currentUser.role === 'hr' ? '<th>Actions</th>' : ''}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${publicHolidays.length > 0 ? 
+                                    publicHolidays.map(holiday => `
+                                        <tr>
+                                            <td>${holiday.name}</td>
+                                            <td>${formatDate(holiday.date)}</td>
+                                            <td>${holiday.duration === 'full' ? 'Full Day' : 'Half Day'} ${holiday.duration === 'half' ? `(${holiday.halfDayTime})` : ''}</td>
+                                            ${currentUser.role === 'hr' ? `
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" onclick="deleteHoliday(${holiday.id})"><i class="fas fa-trash"></i> Delete</button>
+                                            </td>
+                                            ` : ''}
+                                        </tr>
+                                    `).join('') : `
+                                    <tr>
+                                        <td colspan="${currentUser.role === 'hr' ? '4' : '3'}" style="text-align: center;">No public holidays added</td>
+                                    </tr>
+                                    `}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadUnrecordedLeavesView() {
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Unrecorded Leaves</h1>
+                    ${currentUser.role === 'hr' ? '<button class="btn btn-primary" onclick="showAddUnrecordedLeaveModal()"><i class="fas fa-plus"></i> Add Unrecorded Leave</button>' : ''}
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Unrecorded Leave History</h2>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Date</th>
+                                    <th>Duration</th>
+                                    <th>Applied To</th>
+                                    ${currentUser.role === 'hr' ? '<th>Actions</th>' : ''}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${unrecordedLeaves.length > 0 ? 
+                                    unrecordedLeaves
+                                    .filter(leave => 
+                                        currentUser.role === 'hr' || 
+                                        leave.scope === 'all' || 
+                                        (leave.scope === 'selected' && leave.employees.includes(currentUser.id))
+                                    )
+                                    .map(leave => {
+                                        let appliedTo = leave.scope === 'all' ? 'All Employees' : 'Selected Employees';
+                                        if (currentUser.role === 'hr' && leave.scope === 'selected') {
+                                            const selectedNames = leave.employees.map(id => {
+                                                const user = users.find(u => u.id === id);
+                                                return user ? user.name : '';
+                                            }).filter(name => name !== '');
+                                            appliedTo = selectedNames.join(', ');
+                                        }
+                                        return `
+                                        <tr>
+                                            <td>${leave.name}</td>
+                                            <td>${formatDate(leave.date)}</td>
+                                            <td>${leave.duration === 'full' ? 'Full Day' : 'Half Day'} ${leave.duration === 'half' ? `(${leave.halfDayTime})` : ''}</td>
+                                            <td>${appliedTo}</td>
+                                            ${currentUser.role === 'hr' ? `
+                                            <td>
+                                                <button class="btn btn-sm btn-danger" onclick="deleteUnrecordedLeave(${leave.id})"><i class="fas fa-trash"></i> Delete</button>
+                                            </td>
+                                            ` : ''}
+                                        </tr>
+                                    `}).join('') : `
+                                    <tr>
+                                        <td colspan="${currentUser.role === 'hr' ? '5' : '4'}" style="text-align: center;">No unrecorded leaves added</td>
+                                    </tr>
+                                    `}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function loadEmployeeManagementView() {
+            if (currentUser.role !== 'hr') return;
+
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Employee Management</h1>
+                    <button class="btn btn-primary" onclick="showManageEmployeeModal()"><i class="fas fa-plus"></i> Add Employee</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">All Employees</h2>
+                    </div>
+                    <div class="form-group">
+                        <label for="departmentFilter" class="form-label">Filter by Department</label>
+                        <select id="departmentFilter" class="form-select">
+                            <option value="">All Departments</option>
+                            ${departments.map(dept => `
+                                <option value="${dept.id}">${dept.name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div class="form-group" id="employeeSelectionGroup">
+                        <label for="employeeToManage" class="form-label">Select Employee to Manage</label>
+                        <select id="employeeToManage" class="form-select">
+                            <option value="">Select an employee</option>
+                            ${users.filter(u => u.role !== 'hr').map(user => `
+                                <option value="${user.id}">${user.name} (${user.department})</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div id="employeeManagementContent" style="margin-top: 20px;">
+                        <!-- Employee details will be loaded here -->
+                    </div>
+                </div>
+            `;
+
+            // Add event listeners for filtering
+            document.getElementById('departmentFilter').addEventListener('change', function() {
+                const deptId = parseInt(this.value);
+                const employeeSelect = document.getElementById('employeeToManage');
+                
+                if (deptId) {
+                    const dept = departments.find(d => d.id === deptId);
+                    employeeSelect.innerHTML = `
+                        <option value="">Select an employee</option>
+                        ${users.filter(u => u.role !== 'hr' && u.department === dept.name).map(user => `
+                            <option value="${user.id}">${user.name} (${user.department})</option>
+                        `).join('')}
+                    `;
+                } else {
+                    employeeSelect.innerHTML = `
+                        <option value="">Select an employee</option>
+                        ${users.filter(u => u.role !== 'hr').map(user => `
+                            <option value="${user.id}">${user.name} (${user.department})</option>
+                        `).join('')}
+                    `;
+                }
+                
+                document.getElementById('employeeManagementContent').innerHTML = '';
+            });
+
+            // Add event listener for employee selection
+            document.getElementById('employeeToManage').addEventListener('change', function() {
+                const employeeId = parseInt(this.value);
+                if (employeeId) {
+                    viewEmployeeDetails(employeeId);
+                } else {
+                    document.getElementById('employeeManagementContent').innerHTML = '';
+                }
+            });
+        }
+
+        function loadDepartmentManagementView() {
+            if (currentUser.role !== 'hr') return;
+
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>Department Management</h1>
+                    <button class="btn btn-primary" onclick="showManageDepartmentModal()"><i class="fas fa-plus"></i> Add Department</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Departments</h2>
+                    </div>
+                    <div class="form-group">
+                        <label for="departmentToManage" class="form-label">Select Department to Manage</label>
+                        <select id="departmentToManage" class="form-select">
+                            <option value="">Select a department</option>
+                            ${departments.map(dept => `
+                                <option value="${dept.id}">${dept.name}</option>
+                            `).join('')}
+                        </select>
+                    </div>
+                    <div id="departmentManagementContent" style="margin-top: 20px;">
+                        <!-- Department details will be loaded here -->
+                    </div>
+                </div>
+            `;
+
+            // Add event listener for department selection
+            document.getElementById('departmentToManage').addEventListener('change', function() {
+                const deptId = parseInt(this.value);
+                if (deptId) {
+                    const dept = departments.find(d => d.id === deptId);
+                    if (dept) {
+                        document.getElementById('departmentManagementContent').innerHTML = `
+                            <div class="card">
+                                <div class="card-header">
+                                    <h3 class="card-title">${dept.name} Department</h3>
+                                </div>
+                                <div style="text-align: right; margin-top: 20px;">
+                                    <button class="btn btn-danger" onclick="deleteDepartment(${dept.id})"><i class="fas fa-trash"></i> Delete Department</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } else {
+                    document.getElementById('departmentManagementContent').innerHTML = '';
+                }
+            });
+        }
+
+        function loadProfileView() {
+            mainContent.innerHTML = `
+                <div class="page-title">
+                    <h1>My Profile</h1>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Personal Information</h2>
+                    </div>
+                    <div style="display: flex; gap: 20px; padding: 20px;">
+                        <div>
+                            <div style="width: 150px; height: 150px; border-radius: 50%; background-color: #ddd; display: flex; align-items: center; justify-content: center;">
+                                <i class="fas fa-user" style="font-size: 60px; color: #777;"></i>
+                            </div>
+                        </div>
+                        <div style="flex: 1;">
+                            <div style="margin-bottom: 15px;">
+                                <h3 style="color: var(--primary); margin-bottom: 5px;">${currentUser.name}</h3>
+                                <p style="color: var(--gray);">${currentUser.role === 'hr' ? 'HR' : currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}</p>
+                            </div>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                                <div>
+                                    <p><strong>Username:</strong> ${currentUser.username}</p>
+                                    <p><strong>Department:</strong> ${currentUser.department}</p>
+                                </div>
+                                <div>
+                                    <p><strong>Annual Leave:</strong> ${currentUser.leaveBalances.annual} days remaining</p>
+                                    <p><strong>Medical Leave:</strong> ${currentUser.leaveBalances.medical} days remaining</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Modal Functions
+        function showApplyLeaveModal() {
+            const modal = document.getElementById('applyLeaveModal');
+            modal.style.display = 'flex';
+            
+            // Reset form
+            document.getElementById('leaveForm').reset();
+            document.getElementById('singleDateGroup').style.display = 'block';
+            document.getElementById('dateRangeGroup').style.display = 'none';
+            document.getElementById('halfDayGroup').style.display = 'none';
+            document.getElementById('documentUploadGroup').style.display = 'none';
+            
+            // Get disabled dates (weekends, public holidays, and unrecorded leaves)
+            const disabledDates = [];
+            
+            // Add weekends
+            disabledDates.push(function(date) {
+                return (date.getDay() === 0 || date.getDay() === 6);
+            });
+            
+            // Add public holidays
+            publicHolidays.forEach(holiday => {
+                const holidayDate = new Date(holiday.date);
+                disabledDates.push(holidayDate.toISOString().split('T')[0]);
+            });
+            
+            // Add unrecorded leaves
+            unrecordedLeaves.forEach(leave => {
+                if (leave.scope === 'all' || (leave.scope === 'selected' && leave.employees.includes(currentUser.id))) {
+                    const leaveDate = new Date(leave.date);
+                    disabledDates.push(leaveDate.toISOString().split('T')[0]);
+                }
+            });
+
+            // Initialize date pickers
+            flatpickr("#leaveDate", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+
+            flatpickr("#leaveStartDate", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+
+            flatpickr("#leaveEndDate", {
+                dateFormat: "d M Y",
+                disable: disabledDates
+            });
+            
+            // Add event listeners
+            document.getElementById('leaveDuration').addEventListener('change', function() {
+                const duration = this.value;
+                const singleDateGroup = document.getElementById('singleDateGroup');
+                const dateRangeGroup = document.getElementById('dateRangeGroup');
+                const halfDayGroup = document.getElementById('halfDayGroup');
+
+                if (duration === 'multiple') {
+                    singleDateGroup.style.display = 'none';
+                    dateRangeGroup.style.display = 'block';
+                    halfDayGroup.style.display = 'none';
+                } else if (duration === 'half') {
+                    singleDateGroup.style.display = 'block';
+                    dateRangeGroup.style.display = 'none';
+                    halfDayGroup.style.display = 'block';
+                } else {
+                    singleDateGroup.style.display = 'block';
+                    dateRangeGroup.style.display = 'none';
+                    halfDayGroup.style.display = 'none';
+                }
+            });
+            
+            document.getElementById('leaveType').addEventListener('change', function() {
+                const leaveType = this.value;
+                const documentUploadGroup = document.getElementById('documentUploadGroup');
+
+                if (leaveType === 'annual') {
+                    documentUploadGroup.style.display = 'none';
+                } else {
+                    documentUploadGroup.style.display = 'block';
+                }
+            });
+            
+            // Form submission
+            document.getElementById('leaveForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const leaveType = document.getElementById('leaveType').value;
+                const duration = document.getElementById('leaveDuration').value;
+                const halfDayTime = duration === 'half' ? document.getElementById('halfDayTime').value : null;
+                const startDate = duration === 'multiple' ? document.getElementById('leaveStartDate').value : document.getElementById('leaveDate').value;
+                const endDate = duration === 'multiple' ? document.getElementById('leaveEndDate').value : document.getElementById('leaveDate').value;
+                const reason = document.getElementById('leaveReason').value;
+                const document = document.getElementById('leaveDocument').files[0] ? document.getElementById('leaveDocument').files[0].name : null;
+                const contactNumber = document.getElementById('contactNumber').value;
+                
+                // Calculate duration in days excluding weekends and holidays
+                let days = 0;
+                if (duration === 'multiple') {
+                    const start = new Date(startDate);
+                    const end = new Date(endDate);
+                    
+                    // Loop through each day in the range
+                    for (let date = new Date(start); date <= end; date.setDate(date.getDate() + 1)) {
+                        // Skip weekends
+                        if (date.getDay() === 0 || date.getDay() === 6) continue;
+                        
+                        // Skip public holidays
+                        const isHoliday = publicHolidays.some(holiday => {
+                            const holidayDate = new Date(holiday.date);
+                            return holidayDate.toDateString() === date.toDateString();
+                        });
+                        if (isHoliday) continue;
+                        
+                        // Skip unrecorded leaves
+                        const isUnrecordedLeave = unrecordedLeaves.some(leave => {
+                            const leaveDate = new Date(leave.date);
+                            return leaveDate.toDateString() === date.toDateString() && 
+                                  (leave.scope === 'all' || (leave.scope === 'selected' && leave.employees.includes(currentUser.id)));
+                        });
+                        if (isUnrecordedLeave) continue;
+                        
+                        days += 1;
+                    }
+                } else if (duration === 'half') {
+                    days = 0.5;
+                } else {
+                    days = 1;
+                }
+                
+                // Find the supervisor who manages this employee
+                let approver = null;
+                if (currentUser.role === 'employee') {
+                    approver = users.find(u => u.manages && u.manages.includes(currentUser.name));
+                }
+                
+                // Create leave request
+                const newRequest = {
+                    id: leaveRequests.length + 1,
+                    employee: currentUser.name,
+                    type: leaveType,
+                    startDate: startDate,
+                    endDate: endDate,
+                    duration: days,
+                    halfDayTime: halfDayTime,
+                    reason: reason,
+                    document: document,
+                    contactNumber: contactNumber,
+                    status: 'pending',
+                    approver: approver ? approver.name : null,
+                    department: currentUser.department,
+                    dateApplied: new Date().toISOString().split('T')[0],
+                    employeeId: currentUser.id
+                };
+                
+                leaveRequests.push(newRequest);
+                
+                // Send email notification
+                sendLeaveApplicationEmail(newRequest);
+                
+                alert('Leave application submitted successfully!');
+                modal.style.display = 'none';
+                loadDashboardView();
+                updateNotificationBadge();
+            });
+        }
+
+        function showChangePasswordModal() {
+            const modal = document.getElementById('changePasswordModal');
+            modal.style.display = 'flex';
+
+            // Reset form
+            document.getElementById('changePasswordForm').reset();
+            document.getElementById('savePasswordBtn').disabled = true;
+
+            // Reset requirements
+            document.querySelectorAll('.requirement').forEach(req => {
+                req.classList.remove('valid');
+                req.classList.add('invalid');
+                req.querySelector('i').className = 'far fa-circle';
+            });
+
+            document.getElementById('passwordMatch').textContent = '';
+        }
+
+        function showRejectLeaveModal(leaveId) {
+            const modal = document.getElementById('rejectLeaveModal');
+            document.getElementById('rejectLeaveId').value = leaveId;
+            modal.style.display = 'flex';
+        }
+
+        function viewLeaveBalance(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            const modal = document.getElementById('viewLeaveBalanceModal');
+            const tbody = document.getElementById('leaveBalanceTableBody');
+            
+            tbody.innerHTML = `
+                <tr>
+                    <td>Annual Leave</td>
+                    <td>${user.leaveBalances.annual} days</td>
+                </tr>
+                <tr>
+                    <td>Emergency Leave</td>
+                    <td>${user.leaveBalances.emergency} days</td>
+                </tr>
+                <tr>
+                    <td>Unpaid Leave</td>
+                    <td>${user.leaveBalances.unpaid} days</td>
+                </tr>
+                <tr>
+                    <td>Medical Leave</td>
+                    <td>${user.leaveBalances.medical} days</td>
+                </tr>
+                <tr>
+                    <td>Marriage Leave</td>
+                    <td>${user.leaveBalances.marriage} days</td>
+                </tr>
+                <tr>
+                    <td>Maternity Leave</td>
+                    <td>${user.leaveBalances.maternity} days</td>
+                </tr>
+                <tr>
+                    <td>Paternity Leave</td>
+                    <td>${user.leaveBalances.paternity} days</td>
+                </tr>
+                <tr>
+                    <td>Compassionate Leave</td>
+                    <td>${user.leaveBalances.compassionate} days</td>
+                </tr>
+                <tr>
+                    <td>Study Leave</td>
+                    <td>${user.leaveBalances.study} days</td>
+                </tr>
+                <tr>
+                    <td>Examination Leave</td>
+                    <td>${user.leaveBalances.examination} days</td>
+                </tr>
+                <tr>
+                    <td>Replacement Leave</td>
+                    <td>${user.leaveBalances.replacement} days</td>
+                </tr>
+            `;
+
+            modal.style.display = 'flex';
+        }
+
+        function viewEmployeeDetails(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            const modal = document.getElementById('viewEmployeeModal');
+            const content = document.getElementById('employeeDetailsContent');
+            
+            content.innerHTML = `
+                <div style="display: flex; gap: 20px; margin-bottom: 20px;">
+                    <div>
+                        <div style="width: 100px; height: 100px; border-radius: 50%; background-color: #ddd; display: flex; align-items: center; justify-content: center;">
+                            <i class="fas fa-user" style="font-size: 40px; color: #777;"></i>
+                        </div>
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="color: var(--primary); margin-bottom: 5px;">${user.name}</h3>
+                        <p style="color: var(--gray); margin-bottom: 10px;">${user.role === 'hr' ? 'HR' : user.role.charAt(0).toUpperCase() + user.role.slice(1)}</p>
+                        <p><strong>Username:</strong> ${user.username}</p>
+                        <p><strong>Department:</strong> ${user.department}</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Leave Balances</h3>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Leave Type</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Annual Leave</td>
+                                    <td>${user.leaveBalances.annual} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Emergency Leave</td>
+                                    <td>${user.leaveBalances.emergency} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Medical Leave</td>
+                                    <td>${user.leaveBalances.medical} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Marriage Leave</td>
+                                    <td>${user.leaveBalances.marriage} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Maternity Leave</td>
+                                    <td>${user.leaveBalances.maternity} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Paternity Leave</td>
+                                    <td>${user.leaveBalances.paternity} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Compassionate Leave</td>
+                                    <td>${user.leaveBalances.compassionate} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Study Leave</td>
+                                    <td>${user.leaveBalances.study} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Examination Leave</td>
+                                    <td>${user.leaveBalances.examination} days</td>
+                                </tr>
+                                <tr>
+                                    <td>Replacement Leave</td>
+                                    <td>${user.leaveBalances.replacement} days</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+
+            if (currentUser.role === 'hr') {
+                // Add action buttons for HR
+                content.innerHTML = `
+                    <div class="employee-actions">
+                        <button class="btn btn-warning" onclick="editEmployeeLeaveBalance(${user.id})"><i class="fas fa-edit"></i> Edit Leave Balance</button>
+                        <button class="btn btn-primary" onclick="moveEmployee(${user.id})"><i class="fas fa-exchange-alt"></i> Move Employee</button>
+                        <button class="btn btn-danger" onclick="deleteEmployee(${user.id})"><i class="fas fa-trash"></i> Delete Employee</button>
+                    </div>
+                    ${content.innerHTML}
+                `;
+            }
+
+            modal.style.display = 'flex';
+        }
+
+        function showAddHolidayModal() {
+            const modal = document.getElementById('addHolidayModal');
+            modal.style.display = 'flex';
+            document.getElementById('holidayForm').reset();
+            document.getElementById('holidayHalfDayGroup').style.display = 'none';
+            
+            // Initialize date picker
+            flatpickr("#holidayDate", {
+                dateFormat: "d M Y"
+            });
+            
+            // Add event listener for duration change
+            document.getElementById('holidayDuration').addEventListener('change', function() {
+                const duration = this.value;
+                document.getElementById('holidayHalfDayGroup').style.display = duration === 'half' ? 'block' : 'none';
+            });
+            
+            // Form submission
+            document.getElementById('holidayForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('holidayName').value;
+                const date = document.getElementById('holidayDate').value;
+                const duration = document.getElementById('holidayDuration').value;
+                const halfDayTime = duration === 'half' ? document.getElementById('holidayHalfDayTime').value : null;
+
+                // In a real app, this would be saved to the database
+                publicHolidays.push({
+                    id: publicHolidays.length + 1,
+                    name,
+                    date,
+                    duration,
+                    halfDayTime
+                });
+
+                alert('Public holiday added successfully!');
+                modal.style.display = 'none';
+                loadPublicHolidaysView();
+            });
+        }
+
+        function showAddUnrecordedLeaveModal() {
+            const modal = document.getElementById('addUnrecordedLeaveModal');
+            modal.style.display = 'flex';
+            document.getElementById('unrecordedLeaveForm').reset();
+            document.getElementById('unrecordedHalfDayGroup').style.display = 'none';
+            document.getElementById('selectedEmployeesGroup').style.display = 'none';
+
+            // Initialize date picker
+            flatpickr("#unrecordedLeaveDate", {
+                dateFormat: "d M Y"
+            });
+
+            // Populate employees checkbox list
+            const checkboxList = document.getElementById('employeeCheckboxList');
+            checkboxList.innerHTML = users
+                .filter(u => u.role !== 'hr')
+                .map(user => `
+                    <div class="employee-checkbox-item">
+                        <input type="checkbox" id="employee-${user.id}" value="${user.id}">
+                        <label for="employee-${user.id}">${user.name} (${user.department})</label>
+                    </div>
+                `).join('');
+            
+            // Add event listeners
+            document.getElementById('unrecordedLeaveDuration').addEventListener('change', function() {
+                const duration = this.value;
+                document.getElementById('unrecordedHalfDayGroup').style.display = duration === 'half' ? 'block' : 'none';
+            });
+            
+            document.getElementById('unrecordedLeaveScope').addEventListener('change', function() {
+                const scope = this.value;
+                document.getElementById('selectedEmployeesGroup').style.display = scope === 'selected' ? 'block' : 'none';
+            });
+            
+            // Form submission
+            document.getElementById('unrecordedLeaveForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const name = document.getElementById('unrecordedLeaveName').value;
+                const date = document.getElementById('unrecordedLeaveDate').value;
+                const duration = document.getElementById('unrecordedLeaveDuration').value;
+                const halfDayTime = duration === 'half' ? document.getElementById('unrecordedHalfDayTime').value : null;
+                const scope = document.getElementById('unrecordedLeaveScope').value;
+                
+                let selectedEmployees = [];
+                if (scope === 'selected') {
+                    const checkboxes = document.querySelectorAll('#employeeCheckboxList input[type="checkbox"]:checked');
+                    selectedEmployees = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                } else {
+                    selectedEmployees = users.filter(u => u.role !== 'hr').map(u => u.id);
+                }
+                
+                // In a real app, this would be saved to the database
+                unrecordedLeaves.push({
+                    id: unrecordedLeaves.length + 1,
+                    name,
+                    date,
+                    duration,
+                    halfDayTime,
+                    scope,
+                    employees: selectedEmployees,
+                    dateAdded: new Date().toISOString().split('T')[0]
+                });
+
+                alert('Unrecorded leave added successfully!');
+                modal.style.display = 'none';
+                loadUnrecordedLeavesView();
+            });
+        }
+
+        function showManageDepartmentModal() {
+            const modal = document.getElementById('manageDepartmentModal');
+            modal.style.display = 'flex';
+            document.getElementById('departmentForm').reset();
+            document.getElementById('addDepartmentGroup').style.display = 'block';
+            document.getElementById('deleteDepartmentGroup').style.display = 'none';
+
+            // Populate departments for delete
+            const select = document.getElementById('departmentToDelete');
+            select.innerHTML = departments.map(dept => 
+                `<option value="${dept.id}">${dept.name}</option>`
+            ).join('');
+            
+            // Add event listener for action change
+            document.getElementById('departmentAction').addEventListener('change', function() {
+                const action = this.value;
+                document.getElementById('addDepartmentGroup').style.display = action === 'add' ? 'block' : 'none';
+                document.getElementById('deleteDepartmentGroup').style.display = action === 'delete' ? 'block' : 'none';
+            });
+            
+            // Form submission
+            document.getElementById('departmentForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const action = document.getElementById('departmentAction').value;
+
+                if (action === 'add') {
+                    const name = document.getElementById('newDepartmentName').value;
+                    if (name.trim() === '') {
+                        alert('Department name cannot be empty');
+                        return;
+                    }
+                    
+                    departments.push({
+                        id: departments.length + 1,
+                        name
+                    });
+                    alert('Department added successfully!');
+                } else if (action === 'delete') {
+                    const id = parseInt(document.getElementById('departmentToDelete').value);
+                    const index = departments.findIndex(d => d.id === id);
+                    if (index !== -1) {
+                        // Check if department has employees
+                        const hasEmployees = users.some(u => u.department === departments[index].name);
+                        if (hasEmployees) {
+                            alert('Cannot delete department with employees. Please move or delete employees first.');
+                            return;
+                        }
+                        
+                        departments.splice(index, 1);
+                        alert('Department deleted successfully!');
+                    }
+                }
+
+                modal.style.display = 'none';
+                loadDepartmentManagementView();
+            });
+        }
+
+        function showManageEmployeeModal() {
+            const modal = document.getElementById('manageEmployeeModal');
+            modal.style.display = 'flex';
+            document.getElementById('employeeForm').reset();
+            document.getElementById('employeeSelectionGroup').style.display = 'none';
+            document.getElementById('employeeDetailsGroup').style.display = 'none';
+            document.getElementById('addEmployeeGroup').style.display = 'none';
+            document.getElementById('moveEmployeeGroup').style.display = 'none';
+            document.getElementById('supervisorDepartmentsGroup').style.display = 'none';
+
+            // Populate employees for move/delete
+            const select = document.getElementById('selectedEmployee');
+            select.innerHTML = users.filter(u => u.role !== 'hr').map(user => 
+                `<option value="${user.id}">${user.name} (${user.department})</option>`
+            ).join('');
+
+            // Populate departments
+            const deptSelect = document.getElementById('employeeDepartment');
+            deptSelect.innerHTML = departments.map(dept => 
+                `<option value="${dept.id}">${dept.name}</option>`
+            ).join('');
+            
+            // Populate move to department
+            const moveDeptSelect = document.getElementById('moveToDepartment');
+            moveDeptSelect.innerHTML = departments.map(dept => 
+                `<option value="${dept.id}">${dept.name}</option>`
+            ).join('');
+            
+            // Populate departments for supervisor to manage
+            const supervisorDeptSelect = document.getElementById('supervisorDepartments');
+            supervisorDeptSelect.innerHTML = departments.map(dept => 
+                `<option value="${dept.id}">${dept.name}</option>`
+            ).join('');
+            
+            // Add event listeners
+            document.getElementById('employeeAction').addEventListener('change', function() {
+                const action = this.value;
+                document.getElementById('employeeSelectionGroup').style.display = action !== 'add' ? 'block' : 'none';
+                document.getElementById('employeeDetailsGroup').style.display = 'block';
+                document.getElementById('addEmployeeGroup').style.display = action === 'add' ? 'block' : 'none';
+                document.getElementById('moveEmployeeGroup').style.display = action === 'move' ? 'block' : 'none';
+                
+                if (action === 'add') {
+                    document.getElementById('employeeName').value = '';
+                    document.getElementById('employeeUsername').value = '';
+                    document.getElementById('employeeRole').value = 'employee';
+                    document.getElementById('supervisorDepartmentsGroup').style.display = 'none';
+                }
+            });
+            
+            document.getElementById('employeeRole').addEventListener('change', function() {
+                const role = this.value;
+                document.getElementById('supervisorDepartmentsGroup').style.display = role === 'supervisor' ? 'block' : 'none';
+            });
+            
+            document.getElementById('selectedEmployee').addEventListener('change', function() {
+                const employeeId = parseInt(this.value);
+                const user = users.find(u => u.id === employeeId);
+                if (user) {
+                    const action = document.getElementById('employeeAction').value;
+                    
+                    if (action === 'move') {
+                        const department = departments.find(d => d.name === user.department);
+                        document.getElementById('moveToDepartment').value = department ? department.id : '';
+                    }
+                }
+            });
+            
+            // Form submission
+            document.getElementById('employeeForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const action = document.getElementById('employeeAction').value;
+
+                if (action === 'add') {
+                    const name = document.getElementById('employeeName').value;
+                    const username = document.getElementById('employeeUsername').value;
+                    const departmentId = parseInt(document.getElementById('employeeDepartment').value);
+                    const role = document.getElementById('employeeRole').value;
+                    
+                    if (name.trim() === '' || username.trim() === '') {
+                        alert('Name and username cannot be empty');
+                        return;
+                    }
+                    
+                    if (users.some(u => u.username === username)) {
+                        alert('Username already exists');
+                        return;
+                    }
+
+                    const department = departments.find(d => d.id === departmentId);
+                    
+                    let manages = [];
+                    if (role === 'supervisor') {
+                        const selectedDepts = Array.from(document.getElementById('supervisorDepartments').selectedOptions).map(opt => parseInt(opt.value));
+                        manages = users
+                            .filter(u => selectedDepts.includes(departments.find(d => d.name === u.department)?.id))
+                            .map(u => u.name);
+                    }
+                    
+                    users.push({
+                        id: users.length + 1,
+                        name,
+                        username,
+                        password: "password123",
+                        role,
+                        department: department.name,
+                        leaveBalances: JSON.parse(JSON.stringify(defaultLeaveBalances)),
+                        manages,
+                        email: username + "@archipelagogrp.com"
+                    });
+
+                    alert('Employee added successfully!');
+                } else if (action === 'move') {
+                    const id = parseInt(document.getElementById('selectedEmployee').value);
+                    const user = users.find(u => u.id === id);
+                    if (user) {
+                        const departmentId = parseInt(document.getElementById('moveToDepartment').value);
+                        const department = departments.find(d => d.id === departmentId);
+                        user.department = department.name;
+                        alert('Employee moved successfully!');
+                    }
+                } else if (action === 'delete') {
+                    const id = parseInt(document.getElementById('selectedEmployee').value);
+                    if (confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
+                        const index = users.findIndex(u => u.id === id);
+                        if (index !== -1) {
+                            users.splice(index, 1);
+                            alert('Employee deleted successfully!');
+                        }
+                    } else {
+                        return; // Don't close the modal if user cancels
+                    }
+                }
+
+                modal.style.display = 'none';
+                loadEmployeeManagementView();
+            });
+        }
+
+        function editEmployeeLeaveBalance(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            const modal = document.getElementById('editLeaveBalanceModal');
+            document.getElementById('balanceEmployeeId').value = userId;
+            document.getElementById('balanceEmployee').value = userId;
+            
+            // Populate employee dropdown
+            const select = document.getElementById('balanceEmployee');
+            select.innerHTML = users.filter(u => u.role !== 'hr').map(u => 
+                `<option value="${u.id}">${u.name} (${u.department})</option>`
+            ).join('');
+            
+            // Set default leave type and days
+            document.getElementById('balanceLeaveType').value = 'annual';
+            document.getElementById('balanceDays').value = user.leaveBalances.annual;
+            
+            // Add event listeners
+            document.getElementById('balanceEmployee').addEventListener('change', function() {
+                const employeeId = parseInt(this.value);
+                const emp = users.find(u => u.id === employeeId);
+                if (emp) {
+                    document.getElementById('balanceLeaveType').value = 'annual';
+                    document.getElementById('balanceDays').value = emp.leaveBalances.annual;
+                }
+            });
+            
+            document.getElementById('balanceLeaveType').addEventListener('change', function() {
+                const leaveType = this.value;
+                const employeeId = parseInt(document.getElementById('balanceEmployee').value);
+                const emp = users.find(u => u.id === employeeId);
+                
+                if (emp) {
+                    document.getElementById('balanceDays').value = emp.leaveBalances[leaveType];
+                }
+            });
+            
+            // Form submission
+            document.getElementById('leaveBalanceForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const employeeId = parseInt(document.getElementById('balanceEmployee').value);
+                const leaveType = document.getElementById('balanceLeaveType').value;
+                const days = parseFloat(document.getElementById('balanceDays').value);
+
+                const user = users.find(u => u.id === employeeId);
+                if (user) {
+                    user.leaveBalances[leaveType] = days;
+                    alert('Leave balance updated successfully!');
+                    modal.style.display = 'none';
+                    if (currentUser.role === 'hr') {
+                        loadEmployeeManagementView();
+                    } else if (currentUser.role === 'supervisor') {
+                        loadMyEmployeesView();
+                    }
+                }
+            });
+
+            modal.style.display = 'flex';
+        }
+        
+        function moveEmployee(userId) {
+            const user = users.find(u => u.id === userId);
+            if (!user) return;
+
+            showManageEmployeeModal();
+            document.getElementById('employeeAction').value = 'move';
+            document.getElementById('selectedEmployee').value = userId;
+            
+            const department = departments.find(d => d.name === user.department);
+            document.getElementById('moveToDepartment').value = department ? department.id : '';
+        }
+
+        // Close all modals when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+
+        // Close modals when clicking close button
+        document.querySelectorAll('.close-modal').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.modal').style.display = 'none';
+            });
+        });
+
+        // Password toggle functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('toggle-password') || e.target.closest('.toggle-password')) {
+                const toggle = e.target.classList.contains('toggle-password') ? e.target : e.target.closest('.toggle-password');
+                const input = toggle.previousElementSibling;
+                const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+                input.setAttribute('type', type);
+                toggle.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
+            }
+        });
+
+        // Password validation
+        document.getElementById('newPassword').addEventListener('input', function() {
+            const password = this.value;
+            const saveBtn = document.getElementById('savePasswordBtn');
+            let isValid = true;
+
+            // Check length
+            const lengthReq = document.getElementById('lengthReq');
+            if (password.length >= 8) {
+                lengthReq.classList.remove('invalid');
+                lengthReq.classList.add('valid');
+                lengthReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                lengthReq.classList.remove('valid');
+                lengthReq.classList.add('invalid');
+                lengthReq.querySelector('i').className = 'far fa-circle';
+                isValid = false;
+            }
+
+            // Check uppercase
+            const upperReq = document.getElementById('upperReq');
+            if (/[A-Z]/.test(password)) {
+                upperReq.classList.remove('invalid');
+                upperReq.classList.add('valid');
+                upperReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                upperReq.classList.remove('valid');
+                upperReq.classList.add('invalid');
+                upperReq.querySelector('i').className = 'far fa-circle';
+                isValid = false;
+            }
+
+            // Check lowercase
+            const lowerReq = document.getElementById('lowerReq');
+            if (/[a-z]/.test(password)) {
+                lowerReq.classList.remove('invalid');
+                lowerReq.classList.add('valid');
+                lowerReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                lowerReq.classList.remove('valid');
+                lowerReq.classList.add('invalid');
+                lowerReq.querySelector('i').className = 'far fa-circle';
+                isValid = false;
+            }
+
+            // Check number
+            const numberReq = document.getElementById('numberReq');
+            if (/\d/.test(password)) {
+                numberReq.classList.remove('invalid');
+                numberReq.classList.add('valid');
+                numberReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                numberReq.classList.remove('valid');
+                numberReq.classList.add('invalid');
+                numberReq.querySelector('i').className = 'far fa-circle';
+                isValid = false;
+            }
+
+            // Check special char
+            const specialReq = document.getElementById('specialReq');
+            if (/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+                specialReq.classList.remove('invalid');
+                specialReq.classList.add('valid');
+                specialReq.querySelector('i').className = 'fas fa-check';
+            } else {
+                specialReq.classList.remove('valid');
+                specialReq.classList.add('invalid');
+                specialReq.querySelector('i').className = 'far fa-circle';
+                isValid = false;
+            }
+
+            // Check if passwords match
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const matchText = document.getElementById('passwordMatch');
+            if (confirmPassword && password !== confirmPassword) {
+                matchText.textContent = 'Passwords do not match';
+                matchText.style.color = 'var(--danger)';
+                isValid = false;
+            } else if (confirmPassword) {
+                matchText.textContent = 'Passwords match';
+                matchText.style.color = 'var(--success)';
+            } else {
+                matchText.textContent = '';
+            }
+
+            // Enable/disable save button
+            saveBtn.disabled = !isValid || !confirmPassword || password !== confirmPassword;
+        });
+
+        document.getElementById('confirmPassword').addEventListener('input', function() {
+            const password = document.getElementById('newPassword').value;
+            const confirmPassword = this.value;
+            const matchText = document.getElementById('passwordMatch');
+            const saveBtn = document.getElementById('savePasswordBtn');
+
+            if (password && confirmPassword) {
+                if (password === confirmPassword) {
+                    matchText.textContent = 'Passwords match';
+                    matchText.style.color = 'var(--success)';
+                    saveBtn.disabled = false;
+                } else {
+                    matchText.textContent = 'Passwords do not match';
+                    matchText.style.color = 'var(--danger)';
+                    saveBtn.disabled = true;
+                }
+            } else {
+                matchText.textContent = '';
+                saveBtn.disabled = true;
+            }
+        });
+
+        // Form submissions
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            
+            if (currentUser.password !== currentPassword) {
+                alert('Current password is incorrect');
+                return;
+            }
+            
+            currentUser.password = newPassword;
+            alert('Password changed successfully!');
+            document.getElementById('changePasswordModal').style.display = 'none';
+        });
+
+        document.getElementById('rejectLeaveForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const leaveId = parseInt(document.getElementById('rejectLeaveId').value);
+            const reason = document.getElementById('rejectReason').value;
+
+            const request = leaveRequests.find(req => req.id === leaveId);
+            if (request) {
+                request.status = 'rejected';
+                request.rejectReason = reason;
+                
+                // Send email notification
+                sendLeaveStatusEmail(request);
+                
+                alert('Leave request rejected');
+                document.getElementById('rejectLeaveModal').style.display = 'none';
+                loadLeaveRequestsView();
+                updateNotificationBadge();
+            }
+        });
+
+        // Helper Functions
+        function formatDate(dateString) {
+            const options = { day: 'numeric', month: 'short', year: 'numeric' };
+            return new Date(dateString).toLocaleDateString('en-US', options);
+        }
+
+        function getStatusBadgeClass(status) {
+            switch (status) {
+                case 'approved': return 'badge-success';
+                case 'pending': return 'badge-warning';
+                case 'rejected': return 'badge-danger';
+                default: return 'badge-info';
+            }
+        }
+
+        function approveLeave(id) {
+            const request = leaveRequests.find(req => req.id === id);
+            if (request) {
+                request.status = 'approved';
+                
+                // Send email notification
+                sendLeaveStatusEmail(request);
+                
+                alert('Leave request approved');
+                loadLeaveRequestsView();
+                updateNotificationBadge();
+            }
+        }
+        
+        function cancelLeave(id) {
+            if (confirm('Are you sure you want to cancel this leave request?')) {
+                const index = leaveRequests.findIndex(req => req.id === id);
+                if (index !== -1) {
+                    leaveRequests.splice(index, 1);
+                    alert('Leave request cancelled');
+                    loadLeaveRequestsView();
+                    updateNotificationBadge();
+                }
+            }
+        }
+
+        function deleteHoliday(id) {
+            if (confirm('Are you sure you want to delete this holiday?')) {
+                const index = publicHolidays.findIndex(h => h.id === id);
+                if (index !== -1) {
+                    publicHolidays.splice(index, 1);
+                    loadPublicHolidaysView();
+                }
+            }
+        }
+
+        function deleteUnrecordedLeave(id) {
+            if (confirm('Are you sure you want to delete this unrecorded leave?')) {
+                const index = unrecordedLeaves.findIndex(l => l.id === id);
+                if (index !== -1) {
+                    unrecordedLeaves.splice(index, 1);
+                    loadUnrecordedLeavesView();
+                }
+            }
+        }
+
+        function deleteDepartment(id) {
+            if (confirm('Are you sure you want to delete this department? This action cannot be undone.')) {
+                const index = departments.findIndex(d => d.id === id);
+                if (index !== -1) {
+                    // Check if department has employees
+                    const hasEmployees = users.some(u => u.department === departments[index].name);
+                    if (hasEmployees) {
+                        alert('Cannot delete department with employees. Please move or delete employees first.');
+                        return;
+                    }
+                    
+                    departments.splice(index, 1);
+                    loadDepartmentManagementView();
+                }
+            }
+        }
+
+        function deleteEmployee(id) {
+            if (confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
+                const index = users.findIndex(u => u.id === id);
+                if (index !== -1) {
+                    users.splice(index, 1);
+                    loadEmployeeManagementView();
+                }
+            }
+        }
+
+        // Email functions (simulated)
+        function sendLeaveApplicationEmail(request) {
+            // In a real app, this would send an actual email
+            console.log(`Email sent to approvers about leave application from ${request.employee}`);
+            
+            // Get the employee's supervisor and HR
+            const approvers = [];
+            
+            if (request.approver) {
+                const supervisor = users.find(u => u.name === request.approver);
+                if (supervisor && supervisor.email) {
+                    approvers.push(supervisor.email);
+                }
+            }
+            
+            // Always notify HR
+            const hrUsers = users.filter(u => u.role === 'hr' && u.email);
+            hrUsers.forEach(hr => approvers.push(hr.email));
+            
+            // Simulate sending email
+            const emailContent = `
+                Subject: New Leave Application - ${request.employee}
+                
+                A new leave application has been submitted by ${request.employee}.
+                
+                Details:
+                - Type: ${request.type}
+                - Dates: ${formatDate(request.startDate)} ${request.startDate !== request.endDate ? `to ${formatDate(request.endDate)}` : ''}
+                - Duration: ${request.duration} days
+                - Reason: ${request.reason}
+                
+                Please review this application in the Leave Management System.
+                
+                This is an automated message from Archipelago Group LMS.
+            `;
+            
+            console.log(`Email sent to: ${approvers.join(', ')}`);
+            console.log(emailContent);
+        }
+
+        function sendLeaveStatusEmail(request) {
+            // In a real app, this would send an actual email
+            console.log(`Email sent to employee about leave status update`);
+            
+            // Get the employee
+            const employee = users.find(u => u.id === request.employeeId);
+            if (!employee || !employee.email) return;
+            
+            // Simulate sending email
+            const emailContent = `
+                Subject: Your Leave Application Status - ${request.status}
+                
+                Your leave application has been ${request.status}.
+                
+                Details:
+                - Type: ${request.type}
+                - Dates: ${formatDate(request.startDate)} ${request.startDate !== request.endDate ? `to ${formatDate(request.endDate)}` : ''}
+                - Duration: ${request.duration} days
+                - Reason: ${request.reason}
+                ${request.status === 'rejected' ? `- Rejection Reason: ${request.rejectReason}` : ''}
+                
+                This is an automated message from Archipelago Group LMS.
+            `;
+            
+            console.log(`Email sent to: ${employee.email}`);
+            console.log(emailContent);
+            
+            // Also notify HR
+            const hrUsers = users.filter(u => u.role === 'hr' && u.email);
+            hrUsers.forEach(hr => {
+                const hrEmailContent = `
+                    Subject: Leave Application ${request.status} - ${request.employee}
+                    
+                    The leave application from ${request.employee} has been ${request.status}.
+                    
+                    Details:
+                    - Type: ${request.type}
+                    - Dates: ${formatDate(request.startDate)} ${request.startDate !== request.endDate ? `to ${formatDate(request.endDate)}` : ''}
+                    - Duration: ${request.duration} days
+                    - Reason: ${request.reason}
+                    ${request.status === 'rejected' ? `- Rejection Reason: ${request.rejectReason}` : ''}
+                    
+                    This is an automated message from Archipelago Group LMS.
+                `;
+                
+                console.log(`Email sent to HR (${hr.email})`);
+                console.log(hrEmailContent);
+            });
+        }
+
+        // Initialize password toggle on login page
+        document.querySelector('.toggle-password').addEventListener('click', function() {
+            const input = this.previousElementSibling;
+            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
+            input.setAttribute('type', type);
+            this.innerHTML = type === 'password' ? '<i class="far fa-eye"></i>' : '<i class="far fa-eye-slash"></i>';
+        });
+    </script>
+</body>
+</html>
